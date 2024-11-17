@@ -30,15 +30,13 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar";
 
-export function NavUser({
-  user,
-}: {
-  user: {
-    name: string;
-    email: string;
-    avatar: string;
-  };
-}) {
+export type TNavUser = {
+  name: string;
+  email: string;
+  avatar: string;
+};
+
+export function NavUser({ user }: { user: TNavUser }) {
   const { isMobile } = useSidebar();
 
   return (
