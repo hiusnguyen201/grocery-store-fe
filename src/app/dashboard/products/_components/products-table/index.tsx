@@ -9,6 +9,7 @@ import { DataTableFilterBox } from "@/components/ui/table/data-table-filter-box"
 const data: Product[] = [
   {
     _id: "1",
+    image: "/image.jpg",
     name: "Product 1",
     marketPrice: 5000,
     salePrice: 5000,
@@ -26,9 +27,27 @@ const data: Product[] = [
   {
     _id: "3",
     name: "Product 0",
+    image: "/image.jpg",
     marketPrice: 2000,
     salePrice: 5000,
     status: ProductStatus.INACTIVE,
+    createdAt: new Date(),
+  },
+  {
+    _id: "4",
+    name: "Product 5",
+    image: "/image.jpg",
+    marketPrice: 1000,
+    salePrice: 10000,
+    status: ProductStatus.ACTIVE,
+    createdAt: new Date(),
+  },
+  {
+    _id: "5",
+    name: "Product 2",
+    marketPrice: 1000,
+    salePrice: 1000,
+    status: ProductStatus.ACTIVE,
     createdAt: new Date(),
   },
 ];

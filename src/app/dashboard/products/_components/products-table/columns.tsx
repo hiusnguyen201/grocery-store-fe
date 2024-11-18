@@ -1,18 +1,24 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { Checkbox } from "@/components/ui/checkbox";
-
 import { formatDateStr, ProductStatus } from "@/constants";
 import { format } from "date-fns";
 import { Badge } from "@/components/ui/badge";
 import { CellActions } from "./cell-actions";
+import Image from "next/image";
 
 export type Product = {
   _id: string;
   name: string;
+  image?: string;
   marketPrice: number;
   salePrice: number;
   status: ProductStatus;
   createdAt: Date;
+};
+
+const translateStatus: Record<ProductStatus, string> = {
+  Active: "Hoạt động",
+  Inactive: "Không hoạt động",
 };
 
 export const columns: ColumnDef<Product>[] = [
@@ -41,6 +47,24 @@ export const columns: ColumnDef<Product>[] = [
     ),
   },
   {
+    id: "image",
+    accessorKey: "image",
+    header: "Ảnh",
+    cell: ({ row }) => {
+      if (!row.getValue("image")) return <></>;
+      return (
+        <div className="relative aspect-[2/3] w-[50px] h-[75px]">
+          <Image
+            src={row.getValue("image")}
+            alt={row.getValue("name")}
+            fill
+            className="rounded"
+          />
+        </div>
+      );
+    },
+  },
+  {
     id: "name",
     accessorKey: "name",
     header: "Tên",
@@ -60,7 +84,11 @@ export const columns: ColumnDef<Product>[] = [
     accessorKey: "status",
     header: "Trạng thái",
     cell: ({ row }) => {
-      return <Badge className="py-1">{row.getValue("status")}</Badge>;
+      return (
+        <Badge className="py-1">
+          {translateStatus[row.getValue("status") as ProductStatus]}
+        </Badge>
+      );
     },
   },
   {

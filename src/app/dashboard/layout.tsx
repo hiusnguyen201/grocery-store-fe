@@ -49,7 +49,7 @@ export default function DashboardLayout({
   const cookies = useCookies();
   return (
     <SidebarProvider
-      defaultOpen={cookies.get("sidebar:state") === "false"}
+      defaultOpen={JSON.parse(cookies.get("sidebar:state") as string)}
     >
       <AppSidebar data={data} />
       <SidebarInset>
