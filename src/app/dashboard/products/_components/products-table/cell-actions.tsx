@@ -1,5 +1,13 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
-import { ClipboardList, ClipboardPen, MoreHorizontal } from "lucide-react";
+import {
+  ClipboardList,
+  ClipboardPen,
+  EyeOff,
+  MoreHorizontal,
+  Trash2,
+} from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -8,9 +16,11 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Row } from "@tanstack/react-table";
+import Link from "next/link";
+import { Product } from "@/app/dashboard/products/schema";
+import { AlertDialogManual } from "@/components/alert-dialog-manual";
 
-export function CellActions<T>({ row }: { row: Row<T> }) {
+export function CellActions({ data }: { data: Product }) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -22,12 +32,34 @@ export function CellActions<T>({ row }: { row: Row<T> }) {
       <DropdownMenuContent align="end">
         <DropdownMenuLabel>Thao tác</DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <DropdownMenuItem>
-          <ClipboardList /> Xem chi tiết
-        </DropdownMenuItem>
+
+        <Link href={`/dashboard/products/${data.slug || data._id}`}>
+          <DropdownMenuItem>
+            <ClipboardList /> Xem chi tiết
+          </DropdownMenuItem>
+        </Link>
+
         <DropdownMenuItem>
           <ClipboardPen /> Sửa thông tin
         </DropdownMenuItem>
+
+        <DropdownMenuItem>
+          <EyeOff /> Ẩn
+        </DropdownMenuItem>
+
+        <AlertDialogManual
+          title="Are you absolutely sure?"
+          description="This action cannot be undone. This will permanently delete your
+            account and remove your data from our servers."
+          onContinue={() => {
+            // Send api
+          }}
+          trigger={
+            <DropdownMenuItem>
+              <Trash2 /> Xóa
+            </DropdownMenuItem>
+          }
+        />
       </DropdownMenuContent>
     </DropdownMenu>
   );

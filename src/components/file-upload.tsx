@@ -7,13 +7,13 @@ import Dropzone, {
   type DropzoneProps,
   type FileRejection,
 } from "react-dropzone";
-import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useControllableState } from "@/hooks/use-controllable-state";
 import { cn, formatBytes } from "@/lib/utils";
+import { useToast } from "@/hooks/use-toast";
 
 interface FileUploaderProps extends React.HTMLAttributes<HTMLDivElement> {
   /**
@@ -107,6 +107,8 @@ export function FileUploader(props: FileUploaderProps) {
     ...dropzoneProps
   } = props;
 
+  const { toast } = useToast();
+
   const [files, setFiles] = useControllableState({
     prop: valueProp,
     onChange: onValueChange,
@@ -114,14 +116,33 @@ export function FileUploader(props: FileUploaderProps) {
 
   const onDrop = React.useCallback(
     (acceptedFiles: File[], rejectedFiles: FileRejection[]) => {
+      toast({
+        title: `Uploading...`,
+      });
+
       if (!multiple && maxFiles === 1 && acceptedFiles.length > 1) {
-        toast.error("Cannot upload more than 1 file at a time");
+        toast({
+          variant: "destructive",
+          title: "Cannot upload more than 1 file at a time",
+        });
         return;
       }
 
       if ((files?.length ?? 0) + acceptedFiles.length > maxFiles) {
-        toast.error(`Cannot upload more than ${maxFiles} files`);
+        toast({
+          variant: "destructive",
+          title: `Cannot upload more than ${maxFiles} files`,
+        });
         return;
+      }
+
+      if (rejectedFiles.length > 0) {
+        rejectedFiles.forEach(({ file }) => {
+          toast({
+            variant: "destructive",
+            title: `File ${file.name} was rejected`,
+          });
+        });
       }
 
       const newFiles = acceptedFiles.map((file) =>
@@ -134,34 +155,43 @@ export function FileUploader(props: FileUploaderProps) {
 
       setFiles(updatedFiles);
 
-      if (rejectedFiles.length > 0) {
-        rejectedFiles.forEach(({ file }) => {
-          toast.error(`File ${file.name} was rejected`);
-        });
-      }
+      toast({
+        title: `${
+          updatedFiles.length > 0 ? `${updatedFiles.length} files` : `file`
+        } uploaded`,
+      });
 
-      if (
-        onUpload &&
-        updatedFiles.length > 0 &&
-        updatedFiles.length <= maxFiles
-      ) {
-        const target =
-          updatedFiles.length > 0
-            ? `${updatedFiles.length} files`
-            : `file`;
+      // if (
+      //   onUpload &&
+      //   updatedFiles.length > 0 &&
+      //   updatedFiles.length <= maxFiles
+      // ) {
+      //   const target =
+      //     updatedFiles.length > 0
+      //       ? `${updatedFiles.length} files`
+      //       : `file`;
 
-        toast.promise(onUpload(updatedFiles), {
-          loading: `Uploading ${target}...`,
-          success: () => {
-            setFiles([]);
-            return `${target} uploaded`;
-          },
-          error: `Failed to upload ${target}`,
-        });
-      }
+      //   onUpload(updatedFiles)
+      //     .then(() => {
+      //       toast({
+      //         title: `${target} uploaded`,
+      //       });
+      //     })
+      //     .catch(() => {
+      //       toast({
+      //         variant: "destructive",
+      //         title: `Failed to upload ${target}`,
+      //       });
+      //     });
+      // }
     },
-
-    [files, maxFiles, multiple, onUpload, setFiles]
+    [
+      files,
+      maxFiles,
+      multiple,
+      // onUpload,
+      setFiles,
+    ]
   );
 
   function onRemove(index: number) {

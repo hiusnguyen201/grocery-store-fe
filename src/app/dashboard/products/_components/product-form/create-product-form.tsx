@@ -1,12 +1,16 @@
 "use client";
 
-import { DialogForm } from "@/components/ui/form/dialog-form";
+import { DialogForm } from "@/components/form/dialog-form";
 import { Plus } from "lucide-react";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { useFormik } from "formik";
 import { Fragment } from "react";
-import { FileUploader } from "@/components/ui/file-upload";
+import { FileUploader } from "@/components/file-upload";
+import { productSchema } from "@/app/dashboard/products/schema";
+import { TextField } from "@/components/text-field";
+import { Button } from "@/components/ui/button";
+import { formatCurrency } from "@/lib/utils";
 
 export function CreateProductForm() {
   const formik = useFormik({
@@ -18,15 +22,23 @@ export function CreateProductForm() {
     onSubmit: (values) => {
       alert(JSON.stringify(values, null, 2));
     },
+    validationSchema: productSchema,
   });
 
-  const { handleSubmit, values, handleChange, errors, handleReset } =
-    formik;
+  const {
+    handleSubmit,
+    values,
+    handleChange,
+    errors,
+    handleReset,
+    isValid,
+    handleBlur,
+    touched,
+  } = formik;
 
   return (
     <DialogForm
       title="Thêm sản phẩm"
-      btnSubmitTitle="Tạo mới"
       btnTriggerTitle={
         <Fragment>
           <Plus /> Thêm mới
@@ -42,54 +54,81 @@ export function CreateProductForm() {
         <Label htmlFor="image" className="text-right">
           Hình ảnh
         </Label>
-        <FileUploader />
+        <FileUploader onUpload={async (files) => {}} />
       </div>
 
       {/* Name */}
-      <div>
-        <Label htmlFor="name" className="text-right">
-          Tên sản phẩm
-        </Label>
-        <Input
-          type="text"
-          id="name"
-          name="name"
-          className="col-span-3"
-          onChange={handleChange}
-          value={values.name}
-        />
-      </div>
+      <TextField
+        type="text"
+        label="Tên sản phẩm"
+        error={!!(touched.name && errors.name)}
+        id="name"
+        name="name"
+        onChange={handleChange}
+        onBlur={handleBlur}
+        value={values.name}
+        helperText={touched.name && errors.name}
+      />
 
       <div className="flex flex-wrap md:flex-nowrap gap-4">
         {/* Market Price */}
         <div className="col-6 w-full">
-          <Label htmlFor="marketPrice" className="text-right">
-            Giá mua
-          </Label>
-          <Input
+          <TextField
             type="number"
+            label={
+              <>
+                Giá bán (
+                <span className="text-sm">
+                  {formatCurrency(values.marketPrice)}
+                </span>
+                )
+              </>
+            }
+            error={!!(touched.marketPrice && errors.marketPrice)}
             id="marketPrice"
             name="marketPrice"
-            className="col-span-3"
             onChange={handleChange}
+            onBlur={handleBlur}
             value={values.marketPrice}
+            helperText={touched.marketPrice && errors.marketPrice}
           />
         </div>
 
         {/* Sale Price */}
         <div className="col-6 w-full">
-          <Label htmlFor="salePrice" className="text-right">
-            Giá bán
-          </Label>
-          <Input
+          <TextField
             type="number"
+            label={
+              <>
+                Giá bán (
+                <span className="text-sm">
+                  {formatCurrency(values.salePrice)}
+                </span>
+                )
+              </>
+            }
+            error={!!(touched.salePrice && errors.salePrice)}
             id="salePrice"
             name="salePrice"
-            className="col-span-3"
             onChange={handleChange}
+            onBlur={handleBlur}
             value={values.salePrice}
+            helperText={touched.salePrice && errors.salePrice}
           />
         </div>
+      </div>
+
+      <div className="md:text-end">
+        <Button
+          className="md:w-auto w-full min-w-[100px]"
+          disabled={
+            Object.keys(touched).length !==
+              Object.keys(formik.initialValues).length || !isValid
+          }
+          type="submit"
+        >
+          Tạo mới
+        </Button>
       </div>
     </DialogForm>
   );

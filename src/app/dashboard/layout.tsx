@@ -54,7 +54,7 @@ export default function DashboardLayout({
       <AppSidebar data={data} />
       <SidebarInset>
         <AppHeader />
-        <div className="flex h-full flex-col p-4 md:px-6">{children}</div>
+        <div className="h-full p-4 md:px-6">{children}</div>
       </SidebarInset>
     </SidebarProvider>
   );

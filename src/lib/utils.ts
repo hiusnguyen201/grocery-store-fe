@@ -1,5 +1,6 @@
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
+import { useFormatter } from "next-intl";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -23,4 +24,9 @@ export function formatBytes(
       ? accurateSizes[i] ?? "Bytest"
       : sizes[i] ?? "Bytes"
   }`;
+}
+
+export function formatCurrency(num: number) {
+  const format = useFormatter();
+  return format.number(num, { style: "currency", currency: "VND" });
 }

@@ -1,4 +1,4 @@
-import { Heading } from "@/components/ui/heading";
+import { Heading } from "@/components/heading";
 import { Separator } from "@/components/ui/separator";
 import { ProductsTable } from "./_components/products-table";
 import { CreateProductForm } from "./_components/product-form/create-product-form";

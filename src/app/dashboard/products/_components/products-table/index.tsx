@@ -1,10 +1,10 @@
 "use client";
-import { DataTable } from "@/components/ui/table/data-table";
-import { columns, Product } from "./columns";
-import { DataTableSearch } from "@/components/ui/table/data-table-search";
+import { DataTable } from "@/components/table/data-table";
+import { columns } from "./columns";
+import { DataTableSearch } from "@/components/table/data-table-search";
 import { Fragment, useState } from "react";
-import { ProductStatus } from "@/constants";
-import { DataTableFilterBox } from "@/components/ui/table/data-table-filter-box";
+import { Product, ProductStatus } from "@/app/dashboard/products/schema";
+import { DataTableFilterBox } from "@/components/table/data-table-filter-box";
 
 const data: Product[] = [
   {
@@ -77,7 +77,7 @@ export function ProductsTable() {
         />
       </div>
 
-      <DataTable columns={columns} data={data} />
+      <DataTable cellHeight="70px" columns={columns} data={data} />
     </Fragment>
   );
 }

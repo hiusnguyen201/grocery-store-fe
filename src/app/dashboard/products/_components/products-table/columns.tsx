@@ -1,20 +1,14 @@
 import { ColumnDef } from "@tanstack/react-table";
-import { Checkbox } from "@/components/ui/checkbox";
-import { formatDateStr, ProductStatus } from "@/constants";
+import { formatDateStr } from "@/constants";
 import { format } from "date-fns";
 import { Badge } from "@/components/ui/badge";
 import { CellActions } from "./cell-actions";
 import Image from "next/image";
-
-export type Product = {
-  _id: string;
-  name: string;
-  image?: string;
-  marketPrice: number;
-  salePrice: number;
-  status: ProductStatus;
-  createdAt: Date;
-};
+import {
+  DataTableSelectCell,
+  DataTableSelectHeader,
+} from "@/components/table/data-table-select-colum";
+import { Product, ProductStatus } from "@/app/dashboard/products/schema";
 
 const translateStatus: Record<ProductStatus, string> = {
   Active: "Hoạt động",
@@ -26,25 +20,8 @@ export const columns: ColumnDef<Product>[] = [
     id: "select",
     enableSorting: false,
     enableHiding: false,
-    header: ({ table }) => (
-      <Checkbox
-        checked={
-          table.getIsAllPageRowsSelected() ||
-          (table.getIsSomePageRowsSelected() && "indeterminate")
-        }
-        onCheckedChange={(value) =>
-          table.toggleAllPageRowsSelected(!!value)
-        }
-        aria-label="Select all"
-      />
-    ),
-    cell: ({ row }) => (
-      <Checkbox
-        checked={row.getIsSelected()}
-        onCheckedChange={(value) => row.toggleSelected(!!value)}
-        aria-label="Select row"
-      />
-    ),
+    header: ({ table }) => <DataTableSelectHeader header={table} />,
+    cell: ({ row }) => <DataTableSelectCell row={row} />,
   },
   {
     id: "image",
@@ -53,12 +30,13 @@ export const columns: ColumnDef<Product>[] = [
     cell: ({ row }) => {
       if (!row.getValue("image")) return <></>;
       return (
-        <div className="relative aspect-[2/3] w-[50px] h-[75px]">
+        <div className="relative w-[35px] h-full">
           <Image
             src={row.getValue("image")}
             alt={row.getValue("name")}
             fill
             className="rounded"
+            sizes="100%"
           />
         </div>
       );
@@ -103,6 +81,6 @@ export const columns: ColumnDef<Product>[] = [
     id: "actions",
     enableSorting: false,
     enableHiding: false,
-    cell: ({ row }) => <CellActions row={row} />,
+    cell: ({ row }) => <CellActions data={row.original as Product} />,
   },
 ];

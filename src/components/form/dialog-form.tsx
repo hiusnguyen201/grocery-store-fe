@@ -15,7 +15,6 @@ import { ReactNode, useState } from "react";
 type DialogFormProps = {
   children: ReactNode;
   title: string;
-  btnSubmitTitle: string;
   description?: string;
   btnTriggerTitle: ReactNode | string;
   onSubmit: (e?: React.FormEvent<HTMLFormElement>) => void;
@@ -30,7 +29,6 @@ type DialogFormProps = {
 export function DialogForm({
   children,
   title,
-  btnSubmitTitle,
   btnTriggerTitle,
   description,
   encType,
@@ -55,11 +53,7 @@ export function DialogForm({
         <DialogContent className="md:min-w-[640px]">
           <DialogHeader>
             <DialogTitle>{title}</DialogTitle>
-            {description && (
-              <DialogDescription aria-describedby={title}>
-                {description}
-              </DialogDescription>
-            )}
+            <DialogDescription>{description}</DialogDescription>
           </DialogHeader>
           <form
             encType={encType}
@@ -67,9 +61,6 @@ export function DialogForm({
             className="space-y-4"
           >
             <div className={className}>{children}</div>
-            <DialogFooter>
-              <Button type="submit">{btnSubmitTitle}</Button>
-            </DialogFooter>
           </form>
         </DialogContent>
       )}
