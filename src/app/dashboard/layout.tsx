@@ -10,36 +10,8 @@ import {
 } from "lucide-react";
 import { AppHeader } from "@/components/AppHeader";
 import { useCookies } from "next-client-cookies";
-
-const data = {
-  store: {
-    name: "Acme Inc",
-    logo: GalleryVerticalEnd,
-    plan: "Enterprise",
-  },
-  user: {
-    name: "shadcn",
-    email: "m@example.com",
-    avatar: "/window.svg",
-  },
-  navMain: [
-    {
-      title: "Tổng quan",
-      url: "/dashboard/overview",
-      icon: LayoutDashboard,
-    },
-    {
-      title: "Sản phẩm",
-      url: "/dashboard/products",
-      icon: Package,
-    },
-    {
-      title: "Cài đặt",
-      url: "/dashboard/settings",
-      icon: Settings2,
-    },
-  ],
-};
+import { useTranslations } from "next-intl";
+import { useMemo } from "react";
 
 export default function DashboardLayout({
   children,
@@ -47,6 +19,41 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }>) {
   const cookies = useCookies();
+  const t = useTranslations("Dashboard.Navbar");
+
+  const data = useMemo(
+    () => ({
+      store: {
+        name: "Acme Inc",
+        logo: GalleryVerticalEnd,
+        plan: "Enterprise",
+      },
+      user: {
+        name: "shadcn",
+        email: "m@example.com",
+        avatar: "/window.svg",
+      },
+      navMain: [
+        {
+          title: t("overview"),
+          url: "/dashboard/overview",
+          icon: LayoutDashboard,
+        },
+        {
+          title: t("products"),
+          url: "/dashboard/products",
+          icon: Package,
+        },
+        {
+          title: t("settings"),
+          url: "/dashboard/settings",
+          icon: Settings2,
+        },
+      ],
+    }),
+    []
+  );
+
   return (
     <SidebarProvider
       defaultOpen={JSON.parse(cookies.get("sidebar:state") as string)}

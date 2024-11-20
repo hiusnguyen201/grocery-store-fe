@@ -90,13 +90,16 @@ interface FileUploaderProps extends React.HTMLAttributes<HTMLDivElement> {
    * @example disabled
    */
   disabled?: boolean;
+
+  title: string;
+  description?: string;
 }
 
 export function FileUploader(props: FileUploaderProps) {
   const {
     value: valueProp,
     onValueChange,
-    onUpload,
+    // onUpload,
     progresses,
     accept = { "image/*": [] },
     maxSize = 1024 * 1024 * 2,
@@ -104,6 +107,8 @@ export function FileUploader(props: FileUploaderProps) {
     multiple = false,
     disabled = false,
     className,
+    title,
+    description,
     ...dropzoneProps
   } = props;
 
@@ -261,15 +266,13 @@ export function FileUploader(props: FileUploaderProps) {
                 </div>
                 <div className="space-y-px">
                   <p className="font-medium text-muted-foreground">
-                    Drag {`'n'`} drop files here, or click to select files
+                    {title}
                   </p>
-                  <p className="text-sm text-muted-foreground/70">
-                    You can upload
-                    {maxFiles > 1
-                      ? ` ${maxFiles === Infinity ? "multiple" : maxFiles}
-                      files (up to ${formatBytes(maxSize)} each)`
-                      : ` a file with ${formatBytes(maxSize)}`}
-                  </p>
+                  {description && (
+                    <p className="text-sm text-muted-foreground/70">
+                      {description}
+                    </p>
+                  )}
                 </div>
               </div>
             )}

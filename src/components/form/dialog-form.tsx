@@ -5,7 +5,6 @@ import {
   Dialog,
   DialogContent,
   DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -39,31 +38,31 @@ export function DialogForm({
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <Dialog
-      open={isOpen}
-      onOpenChange={(isOpen) => {
-        if (!isOpen) onResetWhenClose();
-        setIsOpen(isOpen);
-      }}
-    >
-      <DialogTrigger asChild>
-        <Button onClick={() => setIsOpen(true)}>{btnTriggerTitle}</Button>
-      </DialogTrigger>
+    <>
+      <Button onClick={() => setIsOpen(true)}>{btnTriggerTitle}</Button>
       {isOpen && (
-        <DialogContent className="md:min-w-[640px]">
-          <DialogHeader>
-            <DialogTitle>{title}</DialogTitle>
-            <DialogDescription>{description}</DialogDescription>
-          </DialogHeader>
-          <form
-            encType={encType}
-            onSubmit={onSubmit}
-            className="space-y-4"
-          >
-            <div className={className}>{children}</div>
-          </form>
-        </DialogContent>
+        <Dialog
+          open={isOpen}
+          onOpenChange={(isOpen) => {
+            if (!isOpen) onResetWhenClose();
+            setIsOpen(isOpen);
+          }}
+        >
+          <DialogContent className="md:min-w-[720px]">
+            <DialogHeader>
+              <DialogTitle>{title}</DialogTitle>
+              <DialogDescription>{description}</DialogDescription>
+            </DialogHeader>
+            <form
+              encType={encType}
+              onSubmit={onSubmit}
+              className="space-y-4"
+            >
+              <div className={className}>{children}</div>
+            </form>
+          </DialogContent>
+        </Dialog>
       )}
-    </Dialog>
+    </>
   );
 }

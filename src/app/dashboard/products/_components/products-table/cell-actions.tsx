@@ -19,32 +19,33 @@ import {
 import Link from "next/link";
 import { Product } from "@/app/dashboard/products/schema";
 import { AlertDialogManual } from "@/components/alert-dialog-manual";
+import { useTranslations } from "next-intl";
 
 export function CellActions({ data }: { data: Product }) {
+  const t = useTranslations("Dashboard.ProductsPage");
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" className="h-8 w-8 p-0">
-          <span className="sr-only">Mở menu</span>
           <MoreHorizontal />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
-        <DropdownMenuLabel>Thao tác</DropdownMenuLabel>
+        <DropdownMenuLabel>{t("titleCellActions")}</DropdownMenuLabel>
         <DropdownMenuSeparator />
 
         <Link href={`/dashboard/products/${data.slug || data._id}`}>
           <DropdownMenuItem>
-            <ClipboardList /> Xem chi tiết
+            <ClipboardList /> {t("titleDetailsAction")}
           </DropdownMenuItem>
         </Link>
 
         <DropdownMenuItem>
-          <ClipboardPen /> Sửa thông tin
+          <ClipboardPen /> {t("titleEditAction")}
         </DropdownMenuItem>
 
         <DropdownMenuItem>
-          <EyeOff /> Ẩn
+          <EyeOff /> {t("titleHideAction")}
         </DropdownMenuItem>
 
         <AlertDialogManual
@@ -56,7 +57,7 @@ export function CellActions({ data }: { data: Product }) {
           }}
           trigger={
             <DropdownMenuItem>
-              <Trash2 /> Xóa
+              <Trash2 /> {t("titleDeleteAction")}
             </DropdownMenuItem>
           }
         />

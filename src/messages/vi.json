@@ -1,1 +1,44 @@
-{}
+{
+  "Dashboard": {
+    "Upload": {
+      "title": "Kéo và thả các tập tin ở đây hoặc nhấp để chọn các tập tin",
+      "description": "Bạn có thể tải lên một tập tin có kích thước 2 MB"
+    },
+    "Messages": {
+      "clearFilters": "Xóa bộ lọc",
+      "noResultsFound": "Không tìm thấy kết quả"
+    },
+    "Navbar": {
+      "overview": "Tổng quan",
+      "products": "Sản phẩm",
+      "settings": "Cài đặt"
+    },
+    "ProductsPage": {
+      "title": "Sản phẩm",
+      "description": "Quản lý sản phẩm",
+
+      "titleBtnCreate": "Thêm mới",
+      "titleFormCreate": "Thêm sản phẩm",
+      "imageField": "Hình ảnh",
+      "nameProductField": "Tên",
+      "marketPriceField": "Giá mua",
+      "salePriceField": "Giá bán",
+      "statusField": "Trạng thái",
+      "createdAtField": "Thời gian tạo",
+      "titleBtnSubmitFormCreate": "Thêm",
+
+      "placeholderSearchBox": "Tìm kiếm tên...",
+      "placeholderStatusFilterBox": "Trạng thái",
+
+      "statusActive": "Hoạt động",
+      "statusInactive": "Không hoạt động",
+
+      "titleCellActions": "Thao tác",
+      "titleDetailsAction": "Xem chi tiết",
+      "titleEditAction": "Sửa thông tin",
+      "titleHideAction": "Ẩn",
+      "titleShowAction": "Hiện",
+      "titleDeleteAction": "Xóa"
+    }
+  }
+}

@@ -1,0 +1,44 @@
+{
+  "Dashboard": {
+    "Upload": {
+      "title": "Drag 'n' drop files here, or click to select files",
+      "description": "You can upload a file with 2 MB"
+    },
+    "Messages": {
+      "clearFilters": "Clear Filters",
+      "noResultsFound": "No Results Found"
+    },
+    "Navbar": {
+      "overview": "Overview",
+      "products": "Products",
+      "settings": "Settings"
+    },
+    "ProductsPage": {
+      "title": "Products",
+      "description": "Mange products",
+
+      "titleBtnCreate": "Add new",
+      "titleFormCreate": "Add product",
+      "imageField": "Image",
+      "nameProductField": "Name",
+      "marketPriceField": "Market Price",
+      "salePriceField": "Sale Price",
+      "statusField": "Status",
+      "createdAtField": "Created At",
+      "titleBtnSubmitFormCreate": "Add",
+
+      "placeholderSearchBox": "Search name...",
+      "placeholderStatusFilterBox": "Status",
+
+      "statusActive": "Active",
+      "statusInactive": "Inactive",
+
+      "titleCellActions": "Actions",
+      "titleDetailsAction": "Details",
+      "titleEditAction": "Edit info",
+      "titleHideAction": "Hide",
+      "titleShowAction": "Show",
+      "titleDeleteAction": "Delete"
+    }
+  }
+}

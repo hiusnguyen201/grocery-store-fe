@@ -3,7 +3,6 @@
 import { DialogForm } from "@/components/form/dialog-form";
 import { Plus } from "lucide-react";
 import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
 import { useFormik } from "formik";
 import { Fragment } from "react";
 import { FileUploader } from "@/components/file-upload";
@@ -11,8 +10,12 @@ import { productSchema } from "@/app/dashboard/products/schema";
 import { TextField } from "@/components/text-field";
 import { Button } from "@/components/ui/button";
 import { formatCurrency } from "@/lib/utils";
+import { useTranslations } from "next-intl";
+import { allowImageMimeTypes, MAX_UPLOAD_FILE_SIZE } from "@/constants";
 
 export function CreateProductForm() {
+  const tPage = useTranslations("Dashboard.ProductsPage");
+  const tUpload = useTranslations("Dashboard.Upload");
   const formik = useFormik({
     initialValues: {
       name: "",
@@ -38,10 +41,10 @@ export function CreateProductForm() {
 
   return (
     <DialogForm
-      title="Thêm sản phẩm"
+      title={tPage("titleFormCreate")}
       btnTriggerTitle={
         <Fragment>
-          <Plus /> Thêm mới
+          <Plus /> {tPage("titleBtnCreate")}
         </Fragment>
       }
       onSubmit={handleSubmit}
@@ -52,15 +55,22 @@ export function CreateProductForm() {
       {/* Image */}
       <div>
         <Label htmlFor="image" className="text-right">
-          Hình ảnh
+          {tPage("imageField")}
         </Label>
-        <FileUploader onUpload={async (files) => {}} />
+        <FileUploader
+          maxSize={MAX_UPLOAD_FILE_SIZE}
+          maxFiles={1}
+          multiple={false}
+          accept={{ "image/*": allowImageMimeTypes }}
+          title={tUpload("title")}
+          description={tUpload("description")}
+        />
       </div>
 
       {/* Name */}
       <TextField
         type="text"
-        label="Tên sản phẩm"
+        label={tPage("nameProductField")}
         error={!!(touched.name && errors.name)}
         id="name"
         name="name"
@@ -77,7 +87,7 @@ export function CreateProductForm() {
             type="number"
             label={
               <>
-                Giá bán (
+                {tPage("marketPriceField")} (
                 <span className="text-sm">
                   {formatCurrency(values.marketPrice)}
                 </span>
@@ -100,7 +110,7 @@ export function CreateProductForm() {
             type="number"
             label={
               <>
-                Giá bán (
+                {tPage("salePriceField")} (
                 <span className="text-sm">
                   {formatCurrency(values.salePrice)}
                 </span>
@@ -127,7 +137,7 @@ export function CreateProductForm() {
           }
           type="submit"
         >
-          Tạo mới
+          {tPage("titleBtnSubmitFormCreate")}
         </Button>
       </div>
     </DialogForm>

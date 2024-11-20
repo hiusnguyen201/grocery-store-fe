@@ -1,10 +1,11 @@
 "use client";
 import { DataTable } from "@/components/table/data-table";
-import { columns } from "./columns";
+import { getColumns } from "./columns";
 import { DataTableSearch } from "@/components/table/data-table-search";
 import { Fragment, useState } from "react";
 import { Product, ProductStatus } from "@/app/dashboard/products/schema";
 import { DataTableFilterBox } from "@/components/table/data-table-filter-box";
+import { useTranslations } from "next-intl";
 
 const data: Product[] = [
   {
@@ -55,29 +56,30 @@ const data: Product[] = [
 export function ProductsTable() {
   const [searchName, setSearchName] = useState("");
   const [statusFilter, setStatusFilter] = useState<string | null>(null);
+  const t = useTranslations("Dashboard.ProductsPage");
 
   return (
     <Fragment>
       <div className="flex flex-wrap items-center gap-4">
         <DataTableSearch
           field="name"
-          placeholder="Tìm kiếm tên..."
+          placeholder={t("placeholderSearchBox")}
           value={searchName}
           setValue={setSearchName}
         />
         <DataTableFilterBox
           field="status"
-          placeholder="Trạng thái"
+          placeholder={t("placeholderStatusFilterBox")}
           options={[
-            { label: "Hoạt động", value: ProductStatus.ACTIVE },
-            { label: "Không hoạt động", value: ProductStatus.INACTIVE },
+            { label: t("statusActive"), value: ProductStatus.ACTIVE },
+            { label: t("statusInactive"), value: ProductStatus.INACTIVE },
           ]}
           filterValue={statusFilter}
           setFilterValue={setStatusFilter}
         />
       </div>
 
-      <DataTable cellHeight="70px" columns={columns} data={data} />
+      <DataTable cellHeight="70px" columns={getColumns()} data={data} />
     </Fragment>
   );
 }

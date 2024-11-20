@@ -19,6 +19,7 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
 import { CheckIcon, Plus } from "lucide-react";
+import { useTranslations } from "next-intl";
 import React, { Dispatch, SetStateAction } from "react";
 
 type FilterOption = {
@@ -42,6 +43,7 @@ export function DataTableFilterBox({
   setFilterValue,
   filterValue,
 }: FilterBoxProps) {
+  const t = useTranslations("Dashboard.Messages");
   const selectedValuesSet = React.useMemo(() => {
     if (!filterValue) return new Set<string>();
     const values = filterValue.split(".");
@@ -81,7 +83,7 @@ export function DataTableFilterBox({
                     variant="secondary"
                     className="rounded-sm px-1 font-normal"
                   >
-                    {selectedValuesSet.size} selected
+                    {selectedValuesSet.size}
                   </Badge>
                 ) : (
                   Array.from(selectedValuesSet).map((value) => (
@@ -104,7 +106,7 @@ export function DataTableFilterBox({
         <Command>
           <CommandInput placeholder={placeholder} />
           <CommandList>
-            <CommandEmpty>No results found.</CommandEmpty>
+            <CommandEmpty>{t("noResultsFound")}</CommandEmpty>
             <CommandGroup style={{ padding: 0 }}>
               {options.map((option) => (
                 <CommandItem
@@ -139,7 +141,7 @@ export function DataTableFilterBox({
                     onSelect={resetFilter}
                     className="justify-center text-center"
                   >
-                    Clear filters
+                    {t("clearFilters")}
                   </CommandItem>
                 </CommandGroup>
               </>

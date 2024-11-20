@@ -1,3 +1,5 @@
+"use client";
+
 import { ColumnDef } from "@tanstack/react-table";
 import { formatDateStr } from "@/constants";
 import { format } from "date-fns";
@@ -8,79 +10,86 @@ import {
   DataTableSelectCell,
   DataTableSelectHeader,
 } from "@/components/table/data-table-select-colum";
-import { Product, ProductStatus } from "@/app/dashboard/products/schema";
+import { Product } from "@/app/dashboard/products/schema";
+import { useMemo } from "react";
+import { useTranslations } from "next-intl";
 
-const translateStatus: Record<ProductStatus, string> = {
-  Active: "Hoạt động",
-  Inactive: "Không hoạt động",
-};
+export function getColumns() {
+  const t = useTranslations("Dashboard.ProductsPage");
+  const columns: ColumnDef<Product>[] = useMemo(
+    () => [
+      {
+        id: "select",
+        enableSorting: false,
+        enableHiding: false,
+        header: ({ table }) => <DataTableSelectHeader header={table} />,
+        cell: ({ row }) => <DataTableSelectCell row={row} />,
+      },
+      {
+        id: "image",
+        accessorKey: "image",
+        header: t("imageField"),
+        cell: ({ row }) => {
+          if (!row.getValue("image")) return <></>;
+          return (
+            <div className="relative w-[35px] h-full">
+              <Image
+                src={row.getValue("image")}
+                alt={row.getValue("name")}
+                fill
+                className="rounded"
+                sizes="100%"
+              />
+            </div>
+          );
+        },
+      },
+      {
+        id: "name",
+        accessorKey: "name",
+        header: t("nameProductField"),
+      },
+      {
+        id: "marketPrice",
+        accessorKey: "marketPrice",
+        header: t("marketPriceField"),
+      },
+      {
+        id: "salePrice",
+        accessorKey: "salePrice",
+        header: t("salePriceField"),
+      },
+      {
+        id: "status",
+        accessorKey: "status",
+        header: t("statusField"),
+        cell: ({ row }) => {
+          return (
+            <Badge className="py-1">
+              {t(`status${row.getValue("status")}`)}
+            </Badge>
+          );
+        },
+      },
+      {
+        id: "createdAt",
+        accessorKey: "createdAt",
+        header: t("createdAtField"),
+        cell: ({ row }) => {
+          return (
+            <div>{format(row.getValue("createdAt"), formatDateStr)}</div>
+          );
+        },
+      },
+      {
+        id: "actions",
+        enableSorting: false,
+        enableHiding: false,
+        cell: ({ row }) => <CellActions data={row.original as Product} />,
+      },
+    ],
+    []
+  );
 
-export const columns: ColumnDef<Product>[] = [
-  {
-    id: "select",
-    enableSorting: false,
-    enableHiding: false,
-    header: ({ table }) => <DataTableSelectHeader header={table} />,
-    cell: ({ row }) => <DataTableSelectCell row={row} />,
-  },
-  {
-    id: "image",
-    accessorKey: "image",
-    header: "Ảnh",
-    cell: ({ row }) => {
-      if (!row.getValue("image")) return <></>;
-      return (
-        <div className="relative w-[35px] h-full">
-          <Image
-            src={row.getValue("image")}
-            alt={row.getValue("name")}
-            fill
-            className="rounded"
-            sizes="100%"
-          />
-        </div>
-      );
-    },
-  },
-  {
-    id: "name",
-    accessorKey: "name",
-    header: "Tên",
-  },
-  {
-    id: "marketPrice",
-    accessorKey: "marketPrice",
-    header: "Giá mua",
-  },
-  {
-    id: "salePrice",
-    accessorKey: "salePrice",
-    header: "Giá bán",
-  },
-  {
-    id: "status",
-    accessorKey: "status",
-    header: "Trạng thái",
-    cell: ({ row }) => {
-      return (
-        <Badge className="py-1">
-          {translateStatus[row.getValue("status") as ProductStatus]}
-        </Badge>
-      );
-    },
-  },
-  {
-    id: "createdAt",
-    accessorKey: "createdAt",
-    header: "Thời gian tạo",
-    cell: ({ row }) => {
-      return <div>{format(row.getValue("createdAt"), formatDateStr)}</div>;
-    },
-  },
-  {
-    id: "actions",
-    enableSorting: false,
-    enableHiding: false,
-    cell: ({ row }) => <CellActions data={row.original as Product} />,
-  },
-];
+  return columns;
+}
