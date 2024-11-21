@@ -1,31 +1,41 @@
 {
   "Dashboard": {
+    "Common": {
+      "clearFilters": "Xóa bộ lọc",
+      "noResults": "Không có kết quả nào",
+      "noEntries": "Không có mục nào",
+      "noPages": "Không có trang nào",
+      "rowsPerPage": "Số hàng trên một trang",
+      "atATime": "Cùng một lúc"
+    },
     "Upload": {
       "title": "Kéo và thả các tập tin ở đây hoặc nhấp để chọn các tập tin",
-      "description": "Bạn có thể tải lên một tập tin có kích thước 2 MB"
-    },
-    "Messages": {
-      "clearFilters": "Xóa bộ lọc",
-      "noResultsFound": "Không tìm thấy kết quả"
+      "titleDropFile": "Thả các tập tin ở đây",
+      "description": "Bạn có thể tải lên một tập tin có kích thước {size} MB",
+      "fileRejected": "Tệp {name} đã bị từ chối",
+      "cannotUploadManyFiles": "Không thể tải lên nhiều hơn ${max} tệp",
+      "fileUploadMessage": "{count, plural, one {# tệp tin đã tải lên} other {# tệp tin đã tải lên}}"
     },
     "Navbar": {
-      "overview": "Tổng quan",
+      "dashboard": "Tổng quan",
       "products": "Sản phẩm",
+      "newProduct": "Thêm sản phẩm",
       "settings": "Cài đặt"
     },
     "ProductsPage": {
       "title": "Sản phẩm",
       "description": "Quản lý sản phẩm",
 
-      "titleBtnCreate": "Thêm mới",
-      "titleFormCreate": "Thêm sản phẩm",
+      "titleBtnCreate": "Thêm 1 sản phẩm mới",
+      "basicInfo": "Thông tin cơ bản",
+      "saleInfo": "Thông tin bán hàng",
+
       "imageField": "Hình ảnh",
       "nameProductField": "Tên",
       "marketPriceField": "Giá mua",
       "salePriceField": "Giá bán",
       "statusField": "Trạng thái",
       "createdAtField": "Thời gian tạo",
-      "titleBtnSubmitFormCreate": "Thêm",
 
       "placeholderSearchBox": "Tìm kiếm tên...",
       "placeholderStatusFilterBox": "Trạng thái",
@@ -38,7 +48,14 @@
       "titleEditAction": "Sửa thông tin",
       "titleHideAction": "Ẩn",
       "titleShowAction": "Hiện",
-      "titleDeleteAction": "Xóa"
+      "titleDeleteAction": "Xóa",
+
+      "titleShowingEntries": "Hiển thị {from} đến {to} trong số {total} mục",
+      "titleShowingPages": "Trang {current} trong {total} trang",
+
+      "titleBtnCancel": "Hủy bỏ",
+      "titleBtnSaveAndHide": "Lưu & Ẩn",
+      "titleBtnSaveAndShow": "Lưu & Hiện thị"
     }
   }
 }

@@ -29,7 +29,8 @@ type FilterOption = {
 };
 
 type FilterBoxProps = {
-  field: string;
+  id?: string;
+  name: string;
   placeholder: string;
   options: FilterOption[];
   setFilterValue: Dispatch<SetStateAction<string | null>>;
@@ -37,13 +38,14 @@ type FilterBoxProps = {
 };
 
 export function DataTableFilterBox({
-  field,
+  id,
+  name,
   placeholder,
   options,
   setFilterValue,
   filterValue,
 }: FilterBoxProps) {
-  const t = useTranslations("Dashboard.Messages");
+  const t = useTranslations("Dashboard.Common");
   const selectedValuesSet = React.useMemo(() => {
     if (!filterValue) return new Set<string>();
     const values = filterValue.split(".");
@@ -104,9 +106,9 @@ export function DataTableFilterBox({
       </PopoverTrigger>
       <PopoverContent className="w-[200px] p-0" align="start">
         <Command>
-          <CommandInput placeholder={placeholder} />
+          <CommandInput id={id} name={name} placeholder={placeholder} />
           <CommandList>
-            <CommandEmpty>{t("noResultsFound")}</CommandEmpty>
+            <CommandEmpty>{t("noResults")}</CommandEmpty>
             <CommandGroup style={{ padding: 0 }}>
               {options.map((option) => (
                 <CommandItem

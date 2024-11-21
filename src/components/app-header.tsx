@@ -7,16 +7,22 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
-import { SidebarTrigger } from "../ui/sidebar";
+import { SidebarTrigger } from "@/components/ui/sidebar";
 import { useBreadcrumbs } from "@/hooks/use-breadcrumbs";
+import { cn } from "@/lib/utils";
 import { Fragment } from "react";
 
-export function AppHeader() {
+export function AppHeader({ className }: { className?: string }) {
   const items = useBreadcrumbs();
   if (items?.length === 0) return null;
 
   return (
-    <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12">
+    <header
+      className={cn(
+        "flex sticky top-0 z-50 bg-[#fff] h-16 shadow w-full shrink-0 border-b items-center gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12",
+        className
+      )}
+    >
       <div className="flex items-center gap-2 px-4">
         <SidebarTrigger className="-ml-1" />
         <Separator orientation="vertical" className="mr-2 h-4" />
@@ -25,14 +31,26 @@ export function AppHeader() {
             {items.map((item, index) => (
               <Fragment key={item.title}>
                 {index !== items.length - 1 && (
-                  <BreadcrumbItem className="hidden md:block">
+                  <BreadcrumbItem
+                    className={cn(
+                      index === 0 && items.length > 1
+                        ? "hidden md:block"
+                        : "block"
+                    )}
+                  >
                     <BreadcrumbLink href={item.link}>
                       {item.title}
                     </BreadcrumbLink>
                   </BreadcrumbItem>
                 )}
                 {index < items.length - 1 && (
-                  <BreadcrumbSeparator className="hidden md:block" />
+                  <BreadcrumbSeparator
+                    className={cn(
+                      index === 0 && items.length > 1
+                        ? "hidden md:block"
+                        : "block"
+                    )}
+                  />
                 )}
                 {index === items.length - 1 && (
                   <BreadcrumbItem>

@@ -8,7 +8,7 @@ import {
   Package,
   Settings2,
 } from "lucide-react";
-import { AppHeader } from "@/components/AppHeader";
+import { AppHeader } from "@/components/app-header";
 import { useCookies } from "next-client-cookies";
 import { useTranslations } from "next-intl";
 import { useMemo } from "react";
@@ -35,7 +35,7 @@ export default function DashboardLayout({
       },
       navMain: [
         {
-          title: t("overview"),
+          title: t("dashboard"),
           url: "/dashboard/overview",
           icon: LayoutDashboard,
         },
@@ -51,7 +51,7 @@ export default function DashboardLayout({
         },
       ],
     }),
-    []
+    [t]
   );
 
   return (
@@ -61,7 +61,7 @@ export default function DashboardLayout({
       <AppSidebar data={data} />
       <SidebarInset>
         <AppHeader />
-        <div className="h-full p-4 md:px-6">{children}</div>
+        <div className="relative h-full p-4 md:px-6">{children}</div>
       </SidebarInset>
     </SidebarProvider>
   );

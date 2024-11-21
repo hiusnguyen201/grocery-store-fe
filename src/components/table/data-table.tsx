@@ -29,8 +29,7 @@ import {
   ChevronLeft,
   ChevronRight,
 } from "lucide-react";
-import { useEffect, useState } from "react";
-import { DataTableSkeleton } from "./data-table-skeleton";
+import { useTranslations } from "next-intl";
 
 type DataTableProps<TData, TValue> = {
   columns: ColumnDef<TData, TValue>[];
@@ -43,11 +42,8 @@ export function DataTable<TData, TValue>({
   data,
   cellHeight,
 }: DataTableProps<TData, TValue>) {
-  const [isClient, setIsClient] = useState(false);
-
-  useEffect(() => {
-    setIsClient(true);
-  }, []);
+  const tPage = useTranslations("Dashboard.ProductsPage");
+  const tCommon = useTranslations("Dashboard.Common");
 
   const table = useReactTable({
     data,
@@ -57,13 +53,9 @@ export function DataTable<TData, TValue>({
     manualSorting: true,
   });
 
-  if (!isClient) {
-    return <DataTableSkeleton />;
-  }
-
   return (
     <div className="w-full">
-      <ScrollArea className="grid h-[calc(80vh-220px)] rounded-md border md:h-[calc(90dvh-240px)]">
+      <ScrollArea className="grid h-[calc(80vh-210px)] rounded-md border md:h-[calc(80vh-180px)] lg:h-[calc(80vh-150px)]">
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
@@ -104,7 +96,7 @@ export function DataTable<TData, TValue>({
                   colSpan={columns.length}
                   className="h-24 text-center"
                 >
-                  No results.
+                  {tCommon("noResults")}
                 </TableCell>
               </TableRow>
             )}
@@ -113,54 +105,54 @@ export function DataTable<TData, TValue>({
         <ScrollBar orientation="horizontal" />
       </ScrollArea>
 
-      <div className="flex flex-col items-center justify-end gap-2 space-x-2 py-4 sm:flex-row">
-        <div className="flex w-full items-center justify-between">
-          <div className="flex-1 text-sm">
-            {data.length > 0 ? (
-              <>Showing 1 to 10 of 20 entries</>
-            ) : (
-              "No entries found"
-            )}
-          </div>
-          <div className="flex flex-col items-center gap-4 sm:flex-row sm:gap-6 lg:gap-8">
-            <div className="flex items-center space-x-2">
-              <p className="whitespace-nowrap text-sm">Rows per page</p>
-              <Select
-                value={`${10}`}
-                onValueChange={(value) => {
-                  table.setPageSize(Number(value));
-                }}
-              >
-                <SelectTrigger className="h-8 w-[70px]">
-                  <SelectValue placeholder={10} />
-                </SelectTrigger>
-                <SelectContent side="top">
-                  {[10, 20, 30, 40, 50].map((pageSize) => (
-                    <SelectItem key={pageSize} value={`${pageSize}`}>
-                      {pageSize}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-          </div>
+      <div className="flex flex-wrap items-center flex-col lg:py-4 py-3 lg:gap-3 gap-2 sm:flex-row">
+        <div className="flex-1 min-h-[32px] flex items-center justify-center text-sm">
+          {data.length > 0
+            ? tPage("titleShowingEntries", {
+                from: 1,
+                to: 10,
+                total: 20,
+              })
+            : tCommon("noEntries")}
         </div>
 
-        <div className="flex w-full items-center justify-between gap-2 sm:justify-end">
-          <div className="flex w-[150px] items-center justify-center text-sm">
-            {data.length > 0 ? (
-              <>
-                Page {1} of {1}
-              </>
-            ) : (
-              "No pages"
-            )}
+        <div className="flex-1 w-full flex items-center gap-3 justify-center">
+          <p className="whitespace-nowrap text-sm">
+            {tCommon("rowsPerPage")}
+          </p>
+          <Select
+            value={`${10}`}
+            onValueChange={(value) => {
+              table.setPageSize(Number(value));
+            }}
+          >
+            <SelectTrigger className="h-8 w-[70px]">
+              <SelectValue placeholder={10} />
+            </SelectTrigger>
+            <SelectContent side="top">
+              {[10, 20, 30, 40, 50].map((pageSize) => (
+                <SelectItem key={pageSize} value={`${pageSize}`}>
+                  {pageSize}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+
+        <div className="lg:flex-1 w-full flex items-center justify-center gap-3">
+          <div className="flex items-center justify-center text-sm">
+            {data.length > 0
+              ? tPage("titleShowingPages", {
+                  current: 1,
+                  total: 1,
+                })
+              : tCommon("noPages")}
           </div>
-          <div className="flex items-center space-x-2">
+          <div className="flex items-center gap-2">
             <Button
               aria-label="Go to first page"
               variant="outline"
-              className="hidden h-8 w-8 p-0 lg:flex"
+              className="hidden h-8 w-8 p-0 md:flex"
               onClick={() => table.setPageIndex(0)}
               disabled={!table.getCanPreviousPage()}
             >
@@ -187,7 +179,7 @@ export function DataTable<TData, TValue>({
             <Button
               aria-label="Go to last page"
               variant="outline"
-              className="hidden h-8 w-8 p-0 lg:flex"
+              className="hidden h-8 w-8 p-0 md:flex"
               onClick={() => table.setPageIndex(table.getPageCount() - 1)}
               disabled={!table.getCanNextPage()}
             >

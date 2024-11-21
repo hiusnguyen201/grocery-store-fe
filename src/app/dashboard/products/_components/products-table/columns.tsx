@@ -1,8 +1,6 @@
 "use client";
 
 import { ColumnDef } from "@tanstack/react-table";
-import { formatDateStr } from "@/constants";
-import { format } from "date-fns";
 import { Badge } from "@/components/ui/badge";
 import { CellActions } from "./cell-actions";
 import Image from "next/image";
@@ -13,8 +11,9 @@ import {
 import { Product } from "@/app/dashboard/products/schema";
 import { useMemo } from "react";
 import { useTranslations } from "next-intl";
+import { FormatDate } from "@/lib/utils";
 
-export function getColumns() {
+export function GetColumns() {
   const t = useTranslations("Dashboard.ProductsPage");
   const columns: ColumnDef<Product>[] = useMemo(
     () => [
@@ -76,9 +75,7 @@ export function getColumns() {
         accessorKey: "createdAt",
         header: t("createdAtField"),
         cell: ({ row }) => {
-          return (
-            <div>{format(row.getValue("createdAt"), formatDateStr)}</div>
-          );
+          return <div>{FormatDate(row.getValue("createdAt"))}</div>;
         },
       },
       {
@@ -88,7 +85,7 @@ export function getColumns() {
         cell: ({ row }) => <CellActions data={row.original as Product} />,
       },
     ],
-    []
+    [t]
   );
 
   return columns;

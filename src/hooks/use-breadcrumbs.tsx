@@ -16,13 +16,13 @@ export function useBreadcrumbs() {
     () => ({
       "/dashboard/overview": [
         {
-          title: t("overview"),
+          title: t("dashboard"),
           link: "/dashboard/overview",
         },
       ],
       "/dashboard/products": [
         {
-          title: t("overview"),
+          title: t("dashboard"),
           link: "/dashboard/overview",
         },
         {
@@ -30,9 +30,23 @@ export function useBreadcrumbs() {
           link: "/dashboard/products",
         },
       ],
+      "/dashboard/products/new": [
+        {
+          title: t("dashboard"),
+          link: "/dashboard/overview",
+        },
+        {
+          title: t("products"),
+          link: "/dashboard/products",
+        },
+        {
+          title: t("newProduct"),
+          link: "/dashboard/products/new",
+        },
+      ],
       "/dashboard/settings": [
         {
-          title: t("overview"),
+          title: t("dashboard"),
           link: "/dashboard/overview",
         },
         {
@@ -41,13 +55,26 @@ export function useBreadcrumbs() {
         },
       ],
     }),
-    []
+    [t]
   );
 
-  const breadcrumbs = useMemo(
-    () => (routeMapping[pathname] ? routeMapping[pathname] : []),
-    [pathname]
-  );
+  const breadcrumbs = useMemo(() => {
+    if (routeMapping[pathname]) {
+      return routeMapping[pathname];
+    }
+
+    // Else manual handle
+    const segments = (pathname as string).split("/").filter(Boolean);
+    return segments.map((segment, index) => {
+      const path = `/${segments.slice(0, index + 1).join("/")}`;
+      return {
+        title: t.has(segment.toLowerCase())
+          ? t(segment.toLowerCase())
+          : segment.toLowerCase(),
+        link: path,
+      };
+    });
+  }, [pathname, t, routeMapping]);
 
   return breadcrumbs;
 }

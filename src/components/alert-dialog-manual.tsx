@@ -10,19 +10,13 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import {
-  cloneElement,
-  isValidElement,
-  ReactElement,
-  ReactNode,
-  useState,
-} from "react";
+import { cloneElement, ReactElement, ReactNode, useState } from "react";
 
 type AlertDialogManualProps = {
   title: string;
   description?: string;
-  trigger: ReactNode;
   onContinue: () => void;
+  trigger: ReactNode | string;
 };
 
 export function AlertDialogManual({
@@ -31,43 +25,41 @@ export function AlertDialogManual({
   onContinue,
   trigger,
 }: AlertDialogManualProps) {
-  const [openDialog, setOpenDialog] = useState(false);
+  const [openAlertDialog, setOpenAlertDialog] = useState(false);
 
   const triggerWrapper = cloneElement(trigger as ReactElement, {
     onClick: (e: Event) => {
       e.preventDefault();
+      setOpenAlertDialog(true);
     },
   });
 
   return (
     <>
-      <button
-        className="w-full"
-        onClick={(e) => {
-          setOpenDialog(true);
-          e.stopPropagation();
-        }}
-      >
-        {triggerWrapper}
-      </button>
-      <AlertDialog open={openDialog} onOpenChange={setOpenDialog}>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>{title}</AlertDialogTitle>
-            {description && (
-              <AlertDialogDescription>
-                {description}
-              </AlertDialogDescription>
-            )}
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction onClick={onContinue}>
-              Continue
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
+      {triggerWrapper}
+      {openAlertDialog && (
+        <AlertDialog
+          open={openAlertDialog}
+          onOpenChange={setOpenAlertDialog}
+        >
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>{title}</AlertDialogTitle>
+              {description && (
+                <AlertDialogDescription>
+                  {description}
+                </AlertDialogDescription>
+              )}
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel>Cancel</AlertDialogCancel>
+              <AlertDialogAction onClick={onContinue}>
+                Continue
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
+      )}
     </>
   );
 }

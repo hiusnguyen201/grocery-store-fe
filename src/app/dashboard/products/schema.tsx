@@ -17,7 +17,7 @@ export type Product = {
 };
 
 export const productSchema = object({
-  name: string().required("Vui lòng nhập tên sản phẩm"),
+  name: string().required(),
   marketPrice: number().required().positive().integer().min(500),
   salePrice: number().required().positive().integer().min(500),
 });

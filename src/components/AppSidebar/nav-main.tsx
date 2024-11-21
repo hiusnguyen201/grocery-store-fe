@@ -47,7 +47,7 @@ export function NavMain({ items }: { items: TNavMainItem[] }) {
                   <Link href={item.url}>
                     <SidebarMenuButton
                       tooltip={item.title}
-                      isActive={item.url === pathname}
+                      isActive={pathname.includes(item.url)}
                     >
                       {item.icon && <item.icon />}
                       <span>{item.title}</span>

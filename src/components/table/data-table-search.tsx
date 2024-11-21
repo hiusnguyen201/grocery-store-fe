@@ -1,23 +1,25 @@
 import { Input } from "@/components/ui/input";
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction } from "react";
 
 export type DataTableSearchProps = {
-  field: string;
+  id?: string;
+  name: string;
   value: string;
   placeholder?: string;
   setValue: Dispatch<SetStateAction<string>>;
 };
 
 export function DataTableSearch({
-  field,
+  id,
+  name,
   placeholder,
   value = "",
   setValue,
 }: DataTableSearchProps) {
   return (
     <Input
-      id={field}
-      name={field}
+      id={id}
+      name={name}
       placeholder={placeholder}
       className="md:max-w-sm"
       value={value}

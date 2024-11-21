@@ -14,6 +14,8 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { useControllableState } from "@/hooks/use-controllable-state";
 import { cn, formatBytes } from "@/lib/utils";
 import { useToast } from "@/hooks/use-toast";
+import { useTranslations } from "next-intl";
+import { Label } from "@/components/ui/label";
 
 interface FileUploaderProps extends React.HTMLAttributes<HTMLDivElement> {
   /**
@@ -91,8 +93,9 @@ interface FileUploaderProps extends React.HTMLAttributes<HTMLDivElement> {
    */
   disabled?: boolean;
 
-  title: string;
-  description?: string;
+  label?: React.ReactNode | string;
+  name?: string;
+  id?: string;
 }
 
 export function FileUploader(props: FileUploaderProps) {
@@ -106,12 +109,14 @@ export function FileUploader(props: FileUploaderProps) {
     maxFiles = 1,
     multiple = false,
     disabled = false,
+    label,
     className,
-    title,
-    description,
+    name,
+    id,
     ...dropzoneProps
   } = props;
-
+  const tUpload = useTranslations("Dashboard.Upload");
+  const tCommon = useTranslations("Dashboard.Common");
   const { toast } = useToast();
 
   const [files, setFiles] = useControllableState({
@@ -121,14 +126,13 @@ export function FileUploader(props: FileUploaderProps) {
 
   const onDrop = React.useCallback(
     (acceptedFiles: File[], rejectedFiles: FileRejection[]) => {
-      toast({
-        title: `Uploading...`,
-      });
-
       if (!multiple && maxFiles === 1 && acceptedFiles.length > 1) {
         toast({
           variant: "destructive",
-          title: "Cannot upload more than 1 file at a time",
+          title:
+            tUpload("cannotUploadFiles", {
+              max: 1,
+            }) + tCommon("atATime").toLowerCase(),
         });
         return;
       }
@@ -136,7 +140,9 @@ export function FileUploader(props: FileUploaderProps) {
       if ((files?.length ?? 0) + acceptedFiles.length > maxFiles) {
         toast({
           variant: "destructive",
-          title: `Cannot upload more than ${maxFiles} files`,
+          title: tUpload("cannotUploadFiles", {
+            max: maxFiles,
+          }),
         });
         return;
       }
@@ -145,9 +151,12 @@ export function FileUploader(props: FileUploaderProps) {
         rejectedFiles.forEach(({ file }) => {
           toast({
             variant: "destructive",
-            title: `File ${file.name} was rejected`,
+            title: tUpload("fileRejected", {
+              name: file.name,
+            }),
           });
         });
+        return;
       }
 
       const newFiles = acceptedFiles.map((file) =>
@@ -161,9 +170,9 @@ export function FileUploader(props: FileUploaderProps) {
       setFiles(updatedFiles);
 
       toast({
-        title: `${
-          updatedFiles.length > 0 ? `${updatedFiles.length} files` : `file`
-        } uploaded`,
+        title: tUpload("fileUploadMessage", {
+          count: updatedFiles.length,
+        }),
       });
 
       // if (
@@ -191,6 +200,9 @@ export function FileUploader(props: FileUploaderProps) {
       // }
     },
     [
+      tCommon,
+      tUpload,
+      toast,
       files,
       maxFiles,
       multiple,
@@ -222,77 +234,82 @@ export function FileUploader(props: FileUploaderProps) {
   const isDisabled = disabled || (files?.length ?? 0) >= maxFiles;
 
   return (
-    <div className="relative flex flex-col gap-6 overflow-hidden">
-      <Dropzone
-        onDrop={onDrop}
-        accept={accept}
-        maxSize={maxSize}
-        maxFiles={maxFiles}
-        multiple={maxFiles > 1 || multiple}
-        disabled={isDisabled}
-      >
-        {({ getRootProps, getInputProps, isDragActive }) => (
-          <div
-            {...getRootProps()}
-            className={cn(
-              "group relative grid h-52 w-full cursor-pointer place-items-center rounded-lg border-2 border-dashed border-muted-foreground/25 px-5 py-2.5 text-center transition hover:bg-muted/25",
-              "ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
-              isDragActive && "border-muted-foreground/50",
-              isDisabled && "pointer-events-none opacity-60",
-              className
-            )}
-            {...dropzoneProps}
-          >
-            <input {...getInputProps()} />
-            {isDragActive ? (
-              <div className="flex flex-col items-center justify-center gap-4 sm:px-5">
-                <div className="rounded-full border border-dashed p-3">
-                  <UploadIcon
-                    className="size-7 text-muted-foreground"
-                    aria-hidden="true"
-                  />
-                </div>
-                <p className="font-medium text-muted-foreground">
-                  Drop the files here
-                </p>
-              </div>
-            ) : (
-              <div className="flex flex-col items-center justify-center gap-4 sm:px-5">
-                <div className="rounded-full border border-dashed p-3">
-                  <UploadIcon
-                    className="size-7 text-muted-foreground"
-                    aria-hidden="true"
-                  />
-                </div>
-                <div className="space-y-px">
+    <div className="w-full">
+      <Label htmlFor={props.id} className="text-base">
+        {label}
+      </Label>
+      <div className="relative flex flex-col gap-6 overflow-hidden">
+        <Dropzone
+          onDrop={onDrop}
+          accept={accept}
+          maxSize={maxSize}
+          maxFiles={maxFiles}
+          multiple={maxFiles > 1 || multiple}
+          disabled={isDisabled}
+        >
+          {({ getRootProps, getInputProps, isDragActive }) => (
+            <div
+              {...getRootProps()}
+              className={cn(
+                "group relative grid h-52 w-full cursor-pointer place-items-center rounded-lg border-2 border-dashed border-muted-foreground/25 px-5 py-2.5 text-center transition hover:bg-muted/25",
+                "ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+                isDragActive && "border-muted-foreground/50",
+                isDisabled && "pointer-events-none opacity-60",
+                className
+              )}
+              {...dropzoneProps}
+            >
+              <input id={id} name={name} {...getInputProps()} />
+              {isDragActive ? (
+                <div className="flex flex-col items-center justify-center gap-4 sm:px-5">
+                  <div className="rounded-full border border-dashed p-3">
+                    <UploadIcon
+                      className="size-7 text-muted-foreground"
+                      aria-hidden="true"
+                    />
+                  </div>
                   <p className="font-medium text-muted-foreground">
-                    {title}
+                    {tUpload("titleDropFile")}
                   </p>
-                  {description && (
-                    <p className="text-sm text-muted-foreground/70">
-                      {description}
-                    </p>
-                  )}
                 </div>
-              </div>
-            )}
-          </div>
-        )}
-      </Dropzone>
-      {files?.length ? (
-        <ScrollArea className="h-fit w-full px-3">
-          <div className="max-h-48 space-y-4">
-            {files?.map((file, index) => (
-              <FileCard
-                key={index}
-                file={file}
-                onRemove={() => onRemove(index)}
-                progress={progresses?.[file.name]}
-              />
-            ))}
-          </div>
-        </ScrollArea>
-      ) : null}
+              ) : (
+                <div className="flex flex-col items-center justify-center gap-4 sm:px-5">
+                  <div className="rounded-full border border-dashed p-3">
+                    <UploadIcon
+                      className="size-7 text-muted-foreground"
+                      aria-hidden="true"
+                    />
+                  </div>
+                  <div className="space-y-px">
+                    <p className="font-medium text-muted-foreground">
+                      {tUpload("title")}
+                    </p>
+                    <p className="text-sm text-muted-foreground/70">
+                      {tUpload("description", {
+                        size: maxSize / (1024 * 1024),
+                      })}
+                    </p>
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
+        </Dropzone>
+        {files?.length ? (
+          <ScrollArea className="h-fit w-full px-3">
+            <div className="max-h-48 space-y-4">
+              {files?.map((file, index) => (
+                <FileCard
+                  key={index}
+                  file={file}
+                  onRemove={() => onRemove(index)}
+                  progress={progresses?.[file.name]}
+                />
+              ))}
+            </div>
+          </ScrollArea>
+        ) : null}
+      </div>
     </div>
   );
 }

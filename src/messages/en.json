@@ -1,16 +1,25 @@
 {
   "Dashboard": {
+    "Common": {
+      "clearFilters": "Clear Filters",
+      "noResults": "No Results",
+      "noEntries": "No Entries",
+      "noPages": "No pages",
+      "rowsPerPage": "Rows per page",
+      "atATime": "At a time"
+    },
     "Upload": {
       "title": "Drag 'n' drop files here, or click to select files",
-      "description": "You can upload a file with 2 MB"
-    },
-    "Messages": {
-      "clearFilters": "Clear Filters",
-      "noResultsFound": "No Results Found"
+      "titleDropFile": "Drop the files here",
+      "description": "You can upload a file with {size} MB",
+      "fileRejected": "File {name} was rejected",
+      "cannotUploadFiles": "Cannot upload more than ${max} files",
+      "fileUploadMessage": "{count, plural, one {# file uploaded} other {# files uploaded}}"
     },
     "Navbar": {
-      "overview": "Overview",
+      "dashboard": "Overview",
       "products": "Products",
+      "newProduct": "New",
       "settings": "Settings"
     },
     "ProductsPage": {
@@ -18,14 +27,15 @@
       "description": "Mange products",
 
       "titleBtnCreate": "Add new",
-      "titleFormCreate": "Add product",
+      "basicInfo": "Basic Information",
+      "saleInfo": "Sale Information",
+
       "imageField": "Image",
       "nameProductField": "Name",
       "marketPriceField": "Market Price",
       "salePriceField": "Sale Price",
       "statusField": "Status",
       "createdAtField": "Created At",
-      "titleBtnSubmitFormCreate": "Add",
 
       "placeholderSearchBox": "Search name...",
       "placeholderStatusFilterBox": "Status",
@@ -38,7 +48,14 @@
       "titleEditAction": "Edit info",
       "titleHideAction": "Hide",
       "titleShowAction": "Show",
-      "titleDeleteAction": "Delete"
+      "titleDeleteAction": "Delete",
+
+      "titleShowingEntries": "Showing {from} to {to} of {total} entries",
+      "titleShowingPages": "Page {current} of {total}",
+
+      "titleBtnCancel": "Cancel",
+      "titleBtnSaveAndHide": "Save & Hide",
+      "titleBtnSaveAndShow": "Save & Show"
     }
   }
 }

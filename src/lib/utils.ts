@@ -1,6 +1,6 @@
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
-import { useFormatter } from "next-intl";
+import { DateTimeFormatOptions, useFormatter } from "next-intl";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -26,7 +26,28 @@ export function formatBytes(
   }`;
 }
 
-export function formatCurrency(num: number) {
+export function FormatCurrency(num: number) {
   const format = useFormatter();
   return format.number(num, { style: "currency", currency: "VND" });
+}
+
+export function FormatDate(date: Date, type: "long" | "short" = "short") {
+  const format = useFormatter();
+
+  let options: DateTimeFormatOptions = {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+  };
+
+  if (type === "long") {
+    options = {
+      ...options,
+      minute: "2-digit",
+      hour: "2-digit",
+      second: "2-digit",
+    };
+  }
+
+  return format.dateTime(date, options);
 }
