@@ -19,14 +19,10 @@ export function TextField({
 }: TextFieldProps & ComponentPropsWithoutRef<typeof Input>) {
   return (
     <div className="w-full">
-      {label && (
-        <Label htmlFor={props.id} className="text-base">
-          {label}
-        </Label>
-      )}
+      {label && <Label htmlFor={props.id}>{label}</Label>}
       <Input {...props} />
       {helperText && (
-        <p className={cn("mt-1 text-sm", error ? "text-red-500" : "")}>
+        <p className={cn("mt-1", error ? "text-red-500" : "")}>
           {helperText}
         </p>
       )}

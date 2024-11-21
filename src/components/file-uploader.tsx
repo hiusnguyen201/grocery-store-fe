@@ -235,9 +235,7 @@ export function FileUploader(props: FileUploaderProps) {
 
   return (
     <div className="w-full">
-      <Label htmlFor={props.id} className="text-base">
-        {label}
-      </Label>
+      <Label htmlFor={props.id}>{label}</Label>
       <div className="relative flex flex-col gap-6 overflow-hidden">
         <Dropzone
           onDrop={onDrop}
