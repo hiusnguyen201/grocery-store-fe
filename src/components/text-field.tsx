@@ -22,7 +22,7 @@ export function TextField({
       {label && <Label htmlFor={props.id}>{label}</Label>}
       <Input {...props} />
       {helperText && (
-        <p className={cn("mt-1", error ? "text-red-500" : "")}>
+        <p className={cn("mt-1 text-sm", error ? "text-red-500" : "")}>
           {helperText}
         </p>
       )}

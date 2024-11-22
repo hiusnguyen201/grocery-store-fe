@@ -11,7 +11,7 @@ import {
 import { AppHeader } from "@/components/app-header";
 import { useCookies } from "next-client-cookies";
 import { useTranslations } from "next-intl";
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 export default function DashboardLayout({
   children,
@@ -20,6 +20,7 @@ export default function DashboardLayout({
 }>) {
   const cookies = useCookies();
   const t = useTranslations("Dashboard.Navbar");
+  const [hydrated, setHydrated] = useState(false);
 
   const data = useMemo(
     () => ({
@@ -53,6 +54,12 @@ export default function DashboardLayout({
     }),
     [t]
   );
+
+  useEffect(() => {
+    setHydrated(true);
+  }, []);
+
+  if (!hydrated) return null;
 
   return (
     <SidebarProvider

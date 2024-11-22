@@ -14,11 +14,14 @@ export default function ProductsPage() {
   return (
     <div className="space-y-4">
       <div className="flex items-start justify-between">
-        <Heading title={t("title")} description={t("description")} />
+        <Heading
+          title={t("Heading.title")}
+          description={t("Heading.description")}
+        />
 
         <Link href={"/dashboard/products/new"}>
           <Button>
-            <Plus /> {t("titleBtnCreate")}
+            <Plus /> {t("CreatePage.titleBtnCreate")}
           </Button>
         </Link>
       </div>

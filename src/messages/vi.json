@@ -23,15 +23,31 @@
       "settings": "Cài đặt"
     },
     "ProductsPage": {
-      "title": "Sản phẩm",
-      "description": "Quản lý sản phẩm",
+      "Validation": {
+        "nameRequired": "Không được để trống",
+        "stringName": "Tên phải là các kí tự",
+        "lengthName": "Tên sản phẩm có ít nhất 3~100 kí tự",
+        "marketPriceRequired": "Không được để trống",
+        "invalidMarketPrice": "Giá mua không hợp lệ",
+        "minMarketPrice": "Giá mua có giá tối thiểu 500 ₫",
+        "salePriceRequired": "Không được để trống",
+        "invalidSalePrice": "Giá bán không hợp lệ",
+        "minSalePrice": "Giá bán có giá tối thiểu 500 ₫"
+      },
 
-      "titleBtnCreate": "Thêm 1 sản phẩm mới",
-      "basicInfo": "Thông tin cơ bản",
-      "saleInfo": "Thông tin bán hàng",
+      "Heading": {
+        "title": "Sản phẩm",
+        "description": "Quản lý sản phẩm"
+      },
+
+      "CreatePage": {
+        "titleBtnCreate": "Thêm 1 sản phẩm mới",
+        "basicInfo": "Thông tin cơ bản",
+        "saleInfo": "Thông tin bán hàng"
+      },
 
       "imageField": "Hình ảnh",
-      "nameProductField": "Tên",
+      "nameProductField": "Tên sản phẩm",
       "marketPriceField": "Giá mua",
       "salePriceField": "Giá bán",
       "statusField": "Trạng thái",

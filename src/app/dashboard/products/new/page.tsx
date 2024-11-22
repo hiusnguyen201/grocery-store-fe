@@ -9,13 +9,13 @@ import {
 import { Tabs, TabsContent } from "@/components/ui/tabs";
 import { useFormik } from "formik";
 import { useTranslations } from "next-intl";
-import { productSchema } from "@/app/dashboard/products/schema";
+import { getProductSchema } from "@/app/dashboard/products/schema";
 import { FileUploader } from "@/components/file-uploader";
 import { allowImageMimeTypes, MAX_UPLOAD_FILE_SIZE } from "@/constants";
 import { TextField } from "@/components/text-field";
 import { FormatCurrency } from "@/lib/utils";
 import Actions from "./actions";
-import { CircleCheck } from "lucide-react";
+import { CheckIcon } from "@/components/check-icon";
 
 export default function CreateProductPage() {
   const t = useTranslations("Dashboard.ProductsPage");
@@ -29,22 +29,24 @@ export default function CreateProductPage() {
     onSubmit: (values) => {
       alert(JSON.stringify(values, null, 2));
     },
-    validationSchema: productSchema,
+    validationSchema: getProductSchema(),
+    validateOnChange: false,
+    validateOnBlur: true,
   });
 
   const {
     handleSubmit,
     values,
     handleChange,
+    handleBlur,
     errors,
     isValid,
-    handleBlur,
     touched,
   } = formik;
 
   return (
     <form encType="multipart/form-data" onSubmit={handleSubmit}>
-      <div className="flex flex-col md:flex-row gap-5">
+      <div className="flex flex-col justify-center md:flex-row gap-5">
         <Tabs defaultValue="hint" className="md:max-w-[300px] w-full">
           <TabsContent
             forceMount
@@ -61,24 +63,23 @@ export default function CreateProductPage() {
               <CardContent className="space-y-2 text-sm">
                 <p className="flex gap-1">
                   <span className="w-[22px] h-[22px] items-center flex justify-center">
-                    <CircleCheck
-                      width={22}
-                      height={22}
-                      fill="green"
-                      stroke="white"
-                    />
+                    <CheckIcon valid={touched.name && !errors.name} />
                   </span>
                   Tên sản phẩm có ít nhất 3~100 kí tự
                 </p>
                 <p className="flex gap-1">
                   <span className="w-[22px] h-[22px] items-center flex justify-center">
-                    <CircleCheck width={18} height={18} />
+                    <CheckIcon
+                      valid={touched.marketPrice && !errors.marketPrice}
+                    />
                   </span>
                   Giá mua có giá thấp nhất là {FormatCurrency(500)}
                 </p>
                 <p className="flex gap-1">
                   <span className="w-[22px] h-[22px] items-center flex justify-center">
-                    <CircleCheck width={18} height={18} />
+                    <CheckIcon
+                      valid={touched.salePrice && !errors.salePrice}
+                    />
                   </span>
                   Giá bán có giá thấp nhất là {FormatCurrency(500)}
                 </p>
@@ -87,7 +88,10 @@ export default function CreateProductPage() {
           </TabsContent>
         </Tabs>
 
-        <Tabs defaultValue="basic-info" className="space-y-5 flex-1">
+        <Tabs
+          defaultValue="basic-info"
+          className="space-y-5 flex-1 max-w-[800px]"
+        >
           {/* <TabsList className="sticky top-16 grid w-full grid-cols-2 z-50">
           <Link href={"#basic-info"}>
             <TabsTrigger className="w-full" value="basic-info">
@@ -109,7 +113,9 @@ export default function CreateProductPage() {
           >
             <Card>
               <CardHeader>
-                <CardTitle className="text-xl">{t("basicInfo")}</CardTitle>
+                <CardTitle className="text-xl">
+                  {t("CreatePage.basicInfo")}
+                </CardTitle>
               </CardHeader>
               <CardContent className="space-y-3">
                 {/* Image */}
@@ -146,7 +152,9 @@ export default function CreateProductPage() {
           >
             <Card>
               <CardHeader>
-                <CardTitle className="text-xl">{t("saleInfo")}</CardTitle>
+                <CardTitle className="text-xl">
+                  {t("CreatePage.saleInfo")}
+                </CardTitle>
               </CardHeader>
               <CardContent className="space-y-3">
                 {/* Market Price */}
