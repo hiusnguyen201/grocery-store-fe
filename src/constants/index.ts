@@ -11,3 +11,8 @@ export const allowImageMimeTypes = [
   ".svg", // Scalable Vector Graphics (SVG)
   ".webp", // Web Picture format (WEBP)
 ];
+
+export enum ProductStatus {
+  ACTIVE = "Active",
+  INACTIVE = "Inactive",
+}

@@ -8,10 +8,10 @@ import {
   DataTableSelectCell,
   DataTableSelectHeader,
 } from "@/components/table/data-table-select-colum";
-import { Product } from "@/app/dashboard/products/schema";
+import { Product } from "@/types/product";
 import { useMemo } from "react";
 import { useTranslations } from "next-intl";
-import { FormatDate } from "@/lib/utils";
+import { TextFormatter } from "@/components/text-formatter";
 
 export function GetColumns() {
   const t = useTranslations("Dashboard.ProductsPage");
@@ -75,7 +75,9 @@ export function GetColumns() {
         accessorKey: "createdAt",
         header: t("createdAtField"),
         cell: ({ row }) => {
-          return <div>{FormatDate(row.getValue("createdAt"))}</div>;
+          return (
+            <TextFormatter type="date" value={row.getValue("createdAt")} />
+          );
         },
       },
       {

@@ -4,6 +4,7 @@ import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
 import { NextIntlClientProvider } from "next-intl";
 import { getLocale, getMessages } from "next-intl/server";
+import StoreProvider from "./StoreProvider";
 
 export const metadata: Metadata = {
   title: "Grocery Ahai",
@@ -23,7 +24,9 @@ export default async function RootLayout({
       <body>
         <NextIntlClientProvider messages={messages}>
           <CookiesProvider>
-            <main>{children}</main>
+            <StoreProvider>
+              <main>{children}</main>
+            </StoreProvider>
           </CookiesProvider>
           <Toaster />
         </NextIntlClientProvider>

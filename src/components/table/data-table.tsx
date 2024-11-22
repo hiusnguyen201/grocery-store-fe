@@ -30,17 +30,20 @@ import {
   ChevronRight,
 } from "lucide-react";
 import { useTranslations } from "next-intl";
+import { MetaData } from "@/types/meta";
 
 type DataTableProps<TData, TValue> = {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
   cellHeight?: string;
+  metaData: MetaData;
 };
 
 export function DataTable<TData, TValue>({
   columns,
   data,
   cellHeight,
+  metaData,
 }: DataTableProps<TData, TValue>) {
   const tPage = useTranslations("Dashboard.ProductsPage");
   const tCommon = useTranslations("Dashboard.Common");
@@ -109,9 +112,9 @@ export function DataTable<TData, TValue>({
         <div className="flex-1 min-h-[32px] flex items-center justify-center text-sm">
           {data.length > 0
             ? tPage("titleShowingEntries", {
-                from: 1,
-                to: 10,
-                total: 20,
+                from: metaData.offset + 1,
+                to: metaData.offset + metaData.limit,
+                total: metaData.totalCount,
               })
             : tCommon("noEntries")}
         </div>
@@ -121,7 +124,7 @@ export function DataTable<TData, TValue>({
             {tCommon("rowsPerPage")}
           </p>
           <Select
-            value={`${10}`}
+            value={`${5}`}
             onValueChange={(value) => {
               table.setPageSize(Number(value));
             }}
@@ -130,7 +133,7 @@ export function DataTable<TData, TValue>({
               <SelectValue placeholder={10} />
             </SelectTrigger>
             <SelectContent side="top">
-              {[10, 20, 30, 40, 50].map((pageSize) => (
+              {[5, 10, 20, 30, 40, 50].map((pageSize) => (
                 <SelectItem key={pageSize} value={`${pageSize}`}>
                   {pageSize}
                 </SelectItem>
@@ -143,8 +146,8 @@ export function DataTable<TData, TValue>({
           <div className="flex items-center justify-center text-sm">
             {data.length > 0
               ? tPage("titleShowingPages", {
-                  current: 1,
-                  total: 1,
+                  current: metaData.page,
+                  total: metaData.totalPage,
                 })
               : tCommon("noPages")}
           </div>

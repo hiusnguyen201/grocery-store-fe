@@ -1,5 +1,7 @@
 "use client";
 
+import { useMemo } from "react";
+import * as Yup from "yup";
 import {
   Card,
   CardContent,
@@ -9,16 +11,35 @@ import {
 import { Tabs, TabsContent } from "@/components/ui/tabs";
 import { useFormik } from "formik";
 import { useTranslations } from "next-intl";
-import { getProductSchema } from "@/app/dashboard/products/schema";
 import { FileUploader } from "@/components/file-uploader";
 import { allowImageMimeTypes, MAX_UPLOAD_FILE_SIZE } from "@/constants";
 import { TextField } from "@/components/text-field";
-import { FormatCurrency } from "@/lib/utils";
 import Actions from "./actions";
 import { CheckIcon } from "@/components/check-icon";
+import { TextFormatter } from "@/components/text-formatter";
 
 export default function CreateProductPage() {
   const t = useTranslations("Dashboard.ProductsPage");
+  const productSchema = useMemo(
+    () =>
+      Yup.object({
+        name: Yup.string()
+          .required(t("Validation.nameRequired"))
+          .min(3, t("Validation.lengthName"))
+          .max(100, t("Validation.lengthName")),
+        marketPrice: Yup.number()
+          .required(t("Validation.marketPriceRequired"))
+          .positive(t("Validation.invalidMarketPrice"))
+          .integer(t("Validation.invalidMarketPrice"))
+          .min(500, t("Validation.minMarketPrice")),
+        salePrice: Yup.number()
+          .required(t("Validation.salePriceRequired"))
+          .positive(t("Validation.invalidSalePrice"))
+          .integer(t("Validation.invalidSalePrice"))
+          .min(500, t("Validation.minSalePrice")),
+      }),
+    []
+  );
 
   const formik = useFormik({
     initialValues: {
@@ -29,7 +50,7 @@ export default function CreateProductPage() {
     onSubmit: (values) => {
       alert(JSON.stringify(values, null, 2));
     },
-    validationSchema: getProductSchema(),
+    validationSchema: productSchema,
     validateOnChange: false,
     validateOnBlur: true,
   });
@@ -73,7 +94,8 @@ export default function CreateProductPage() {
                       valid={touched.marketPrice && !errors.marketPrice}
                     />
                   </span>
-                  Giá mua có giá thấp nhất là {FormatCurrency(500)}
+                  Giá mua có giá thấp nhất là{" "}
+                  <TextFormatter type="currency" value={500} />
                 </p>
                 <p className="flex gap-1">
                   <span className="w-[22px] h-[22px] items-center flex justify-center">
@@ -81,7 +103,8 @@ export default function CreateProductPage() {
                       valid={touched.salePrice && !errors.salePrice}
                     />
                   </span>
-                  Giá bán có giá thấp nhất là {FormatCurrency(500)}
+                  Giá bán có giá thấp nhất là{" "}
+                  <TextFormatter type="currency" value={500} />
                 </p>
               </CardContent>
             </Card>
@@ -163,9 +186,11 @@ export default function CreateProductPage() {
                   label={
                     <>
                       {t("marketPriceField")} (
-                      <span className="text-sm">
-                        {FormatCurrency(values.marketPrice)}
-                      </span>
+                      <TextFormatter
+                        type="currency"
+                        className="text-sm"
+                        value={values.marketPrice}
+                      />
                       )
                     </>
                   }
@@ -184,9 +209,11 @@ export default function CreateProductPage() {
                   label={
                     <>
                       {t("salePriceField")} (
-                      <span className="text-sm">
-                        {FormatCurrency(values.salePrice)}
-                      </span>
+                      <TextFormatter
+                        type="currency"
+                        className="text-sm"
+                        value={values.salePrice}
+                      />
                       )
                     </>
                   }

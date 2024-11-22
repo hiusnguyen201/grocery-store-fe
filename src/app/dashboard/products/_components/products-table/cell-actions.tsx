@@ -17,7 +17,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import Link from "next/link";
-import { Product } from "@/app/dashboard/products/schema";
+import { Product } from "@/types/product";
 import { AlertDialogManual } from "@/components/alert-dialog-manual";
 import { useTranslations } from "next-intl";
 // import { UpdateProductForm } from "../product-form/update-product-form";
