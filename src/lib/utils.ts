@@ -28,6 +28,7 @@ export function formatBytes(
 
 export function formatCurrency(num: number) {
   const format = useFormatter();
+
   return format.number(num, {
     style: "currency",
     currency: "VND",

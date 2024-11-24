@@ -1,7 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
-import * as Yup from "yup";
+import { useEffect, useRef, useState } from "react";
 import {
   Card,
   CardContent,
@@ -20,52 +19,30 @@ import {
 import { TextField } from "@/components/text-field";
 import Actions from "./actions";
 import { CheckIcon } from "@/components/check-icon";
-import {
-  createProduct,
-  checkNameExists,
-} from "@/lib/features/product-slice";
+import { createProduct } from "@/lib/features/product-slice";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { toast } from "@/hooks/use-toast";
 import { RootState } from "@/lib/store";
 import { formatCurrency } from "@/lib/utils";
-
-const MIN_PRICE_PRODUCT = 500;
-const MAX_PRICE_PRODUCT = 500000;
+import {
+  MAX_LENGTH_NAME_PRODUCT,
+  MAX_PRICE_PRODUCT,
+  MIN_LENGTH_NAME_PRODUCT,
+  MIN_PRICE_PRODUCT,
+  useProductSchema,
+} from "./use-product-schema";
 
 export default function CreateProductPage() {
+  const { productSchema, minPriceFormat, maxPriceFormat } =
+    useProductSchema();
   const t = useTranslations("Dashboard.ProductsPage");
   const { error } = useAppSelector((state: RootState) => state.product);
   const dispatch = useAppDispatch();
-  const [files, setFiles] = useState<File[]>([]);
-
-  const productSchema = useMemo(
-    () =>
-      Yup.object({
-        name: Yup.string()
-          .required(t("Validation.nameRequired"))
-          .min(3, t("Validation.lengthName"))
-          .max(100, t("Validation.lengthName"))
-          .test("uniqueName", t("Validation.existName"), async (value) => {
-            return !(await dispatch(checkNameExists(value)));
-          }),
-        marketPrice: Yup.number()
-          .required(t("Validation.marketPriceRequired"))
-          .integer(t("Validation.invalidMarketPrice"))
-          .positive(t("Validation.invalidMarketPrice"))
-          .min(MIN_PRICE_PRODUCT, t("Validation.minMarketPrice"))
-          .max(MAX_PRICE_PRODUCT, t("Validation.maxMarketPrice")),
-        salePrice: Yup.number()
-          .required(t("Validation.salePriceRequired"))
-          .integer(t("Validation.invalidMarketPrice"))
-          .positive(t("Validation.invalidMarketPrice"))
-          .min(MIN_PRICE_PRODUCT, t("Validation.minSalePrice"))
-          .max(MAX_PRICE_PRODUCT, t("Validation.maxSalePrice")),
-      }),
-    []
-  );
+  const [nameChanged, setNameChanged] = useState(false);
 
   const formik = useFormik({
     initialValues: {
+      image: [] as File[],
       name: "",
       marketPrice: 0,
       salePrice: 0,
@@ -79,8 +56,8 @@ export default function CreateProductPage() {
       formData.append("salePrice", values.salePrice.toString());
       formData.append("status", values.status);
 
-      if (files && files.length > 0) {
-        formData.append("image", files[0]);
+      if (values.image.length > 0) {
+        formData.append("image", values.image[0]);
       }
 
       dispatch(createProduct(formData));
@@ -105,8 +82,6 @@ export default function CreateProductPage() {
     dirty,
   } = formik;
 
-  console.log(values);
-
   useEffect(() => {
     if (submitCount === 0) return;
     if (!error) {
@@ -115,7 +90,7 @@ export default function CreateProductPage() {
         variant: "success",
       });
       resetForm();
-      setFiles([]);
+      setFieldValue("image", []);
     } else {
       toast({
         title: t("Messages.createProductFailed"),
@@ -142,7 +117,7 @@ export default function CreateProductPage() {
               <Card>
                 <CardHeader className="border-blue-400 border-t-4 rounded-lg">
                   <CardTitle className="text-base">
-                    Gợi ý điền thông tin
+                    {t("CreatePage.hintFillInfo")}
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-2 text-sm">
@@ -150,7 +125,10 @@ export default function CreateProductPage() {
                     <span className="w-[22px] h-[22px] items-center flex justify-center">
                       <CheckIcon valid={touched.name && !errors.name} />
                     </span>
-                    Tên sản phẩm có ít nhất 3~100 kí tự
+                    {t("Validation.lengthName", {
+                      min: MIN_LENGTH_NAME_PRODUCT,
+                      max: MAX_LENGTH_NAME_PRODUCT,
+                    })}
                   </p>
                   <p className="flex gap-1">
                     <span className="w-[22px] h-[22px] items-center flex justify-center">
@@ -158,9 +136,10 @@ export default function CreateProductPage() {
                         valid={touched.marketPrice && !errors.marketPrice}
                       />
                     </span>
-                    {`Giá mua có giá từ ${formatCurrency(
-                      MIN_PRICE_PRODUCT
-                    )}~${formatCurrency(MAX_PRICE_PRODUCT)}`}
+                    {t("Validation.minMaxMarketPrice", {
+                      min: minPriceFormat,
+                      max: maxPriceFormat,
+                    })}
                   </p>
                   <p className="flex gap-1">
                     <span className="w-[22px] h-[22px] items-center flex justify-center">
@@ -168,9 +147,10 @@ export default function CreateProductPage() {
                         valid={touched.salePrice && !errors.salePrice}
                       />
                     </span>
-                    {`Giá bán có giá từ ${formatCurrency(
-                      MIN_PRICE_PRODUCT
-                    )}~${formatCurrency(MAX_PRICE_PRODUCT)}`}
+                    {t("Validation.minMaxSalePrice", {
+                      min: minPriceFormat,
+                      max: maxPriceFormat,
+                    })}
                   </p>
                 </CardContent>
               </Card>
@@ -201,9 +181,9 @@ export default function CreateProductPage() {
                     maxFiles={1}
                     multiple={false}
                     accept={{ "image/*": allowImageMimeTypes }}
-                    value={files}
+                    value={values.image}
                     onValueChange={(value) => {
-                      setFiles(value);
+                      setFieldValue("image", value);
                     }}
                   />
 
@@ -215,12 +195,16 @@ export default function CreateProductPage() {
                     error={!!(touched.name && errors.name)}
                     id="name"
                     name="name"
-                    onChange={(e) => {
+                    onChange={async (e) => {
+                      setNameChanged(true);
                       setFieldValue("name", e.target.value);
                     }}
                     onBlur={(e) => {
-                      handleBlur(e);
-                      validateField("name");
+                      if (nameChanged || !values.name) {
+                        handleBlur(e);
+                        validateField("name");
+                        setNameChanged(false);
+                      }
                     }}
                     value={values.name}
                     helperText={touched.name && errors.name}
@@ -229,6 +213,7 @@ export default function CreateProductPage() {
               </Card>
             </TabsContent>
             <TabsContent
+              tabIndex={-1}
               id="sale-info"
               forceMount
               data-state={true}
@@ -254,7 +239,9 @@ export default function CreateProductPage() {
                     id="marketPrice"
                     name="marketPrice"
                     onChange={(e) => {
-                      if (Number(e.target.value) >= 0) {
+                      if (Number(e.target.value) >= MAX_PRICE_PRODUCT) {
+                        setFieldValue("marketPrice", MAX_PRICE_PRODUCT);
+                      } else if (Number(e.target.value) >= 0) {
                         setFieldValue("marketPrice", +e.target.value);
                       }
                     }}
@@ -279,7 +266,9 @@ export default function CreateProductPage() {
                     id="salePrice"
                     name="salePrice"
                     onChange={(e) => {
-                      if (Number(e.target.value) >= 0) {
+                      if (Number(e.target.value) >= MAX_PRICE_PRODUCT) {
+                        setFieldValue("salePrice", MAX_PRICE_PRODUCT);
+                      } else if (Number(e.target.value) >= 0) {
                         setFieldValue("salePrice", +e.target.value);
                       }
                     }}

@@ -13,7 +13,7 @@
       "titleDropFile": "Thả các tập tin ở đây",
       "description": "Bạn có thể tải lên một tập tin có kích thước {size} MB",
       "fileRejected": "Tệp {name} đã bị từ chối",
-      "cannotUploadManyFiles": "Không thể tải lên nhiều hơn ${max} tệp",
+      "cannotUploadManyFiles": "Không thể tải lên nhiều hơn {max} tệp",
       "fileUploadMessage": "{count, plural, one {# tệp tin đã tải lên} other {# tệp tin đã tải lên}}"
     },
     "Navbar": {
@@ -26,15 +26,13 @@
       "Validation": {
         "nameRequired": "Không được để trống",
         "stringName": "Tên phải là các kí tự",
-        "lengthName": "Tên sản phẩm có ít nhất 3~100 kí tự",
+        "lengthName": "Tên sản phẩm có ít nhất {min}~{max} kí tự",
         "marketPriceRequired": "Không được để trống",
         "invalidMarketPrice": "Giá mua không hợp lệ",
-        "minMarketPrice": "Giá mua có giá tối thiểu 500 ₫",
-        "maxMarketPrice": "Giá mua có giá tối đa 500.000 ₫",
+        "minMaxMarketPrice": "Giá mua có giá từ {min}~{max}",
         "salePriceRequired": "Không được để trống",
         "invalidSalePrice": "Giá bán không hợp lệ",
-        "minSalePrice": "Giá bán có giá tối thiểu 500 ₫",
-        "maxSalePrice": "Giá bán có giá tối đa 500.000 ₫",
+        "minMaxSalePrice": "Giá bán có giá từ {min}~{max}",
         "existName": "Tên sản phẩm đã tồn tại"
       },
 
@@ -49,6 +47,7 @@
       },
 
       "CreatePage": {
+        "hintFillInfo": "Gợi ý điền thông tin",
         "titleBtnCreate": "Thêm 1 sản phẩm mới",
         "basicInfo": "Thông tin cơ bản",
         "saleInfo": "Thông tin bán hàng"

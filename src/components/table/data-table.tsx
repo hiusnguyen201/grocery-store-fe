@@ -38,6 +38,10 @@ type DataTableProps<TData, TValue> = {
   data: TData[];
   cellHeight?: string;
   metaData: MetaData;
+  onPrevious?: () => void;
+  onNext?: () => void;
+  limit?: number;
+  onLimitChange?: (value: number) => void;
 };
 
 export function DataTable<TData, TValue>({
@@ -45,6 +49,10 @@ export function DataTable<TData, TValue>({
   data,
   cellHeight,
   metaData,
+  onPrevious,
+  onNext,
+  limit,
+  onLimitChange,
 }: DataTableProps<TData, TValue>) {
   const tPage = useTranslations("Dashboard.ProductsPage");
   const tCommon = useTranslations("Dashboard.Common");
@@ -125,9 +133,11 @@ export function DataTable<TData, TValue>({
             {tCommon("rowsPerPage")}
           </p>
           <Select
-            value={String(LIMIT_PAGE[0])}
+            value={limit?.toString()}
             onValueChange={(value) => {
-              table.setPageSize(Number(value));
+              if (onLimitChange) {
+                onLimitChange(+value);
+              }
             }}
           >
             <SelectTrigger className="h-8 w-[70px]">
@@ -153,7 +163,7 @@ export function DataTable<TData, TValue>({
               : tCommon("noPages")}
           </div>
           <div className="flex items-center gap-2">
-            <Button
+            {/* <Button
               aria-label="Go to first page"
               variant="outline"
               className="hidden h-8 w-8 p-0 md:flex"
@@ -161,13 +171,13 @@ export function DataTable<TData, TValue>({
               disabled={!table.getCanPreviousPage()}
             >
               <ArrowLeft className="h-4 w-4" aria-hidden="true" />
-            </Button>
+            </Button> */}
             <Button
               aria-label="Go to previous page"
               variant="outline"
               className="h-8 w-8 p-0"
-              onClick={() => table.previousPage()}
-              disabled={!table.getCanPreviousPage()}
+              onClick={onPrevious}
+              disabled={!metaData.isPrevious}
             >
               <ChevronLeft className="h-4 w-4" aria-hidden="true" />
             </Button>
@@ -175,12 +185,12 @@ export function DataTable<TData, TValue>({
               aria-label="Go to next page"
               variant="outline"
               className="h-8 w-8 p-0"
-              onClick={() => table.nextPage()}
-              disabled={!table.getCanNextPage()}
+              onClick={onNext}
+              disabled={!metaData.isNext}
             >
               <ChevronRight className="h-4 w-4" aria-hidden="true" />
             </Button>
-            <Button
+            {/* <Button
               aria-label="Go to last page"
               variant="outline"
               className="hidden h-8 w-8 p-0 md:flex"
@@ -188,7 +198,7 @@ export function DataTable<TData, TValue>({
               disabled={!table.getCanNextPage()}
             >
               <ArrowRight className="h-4 w-4" aria-hidden="true" />
-            </Button>
+            </Button> */}
           </div>
         </div>
       </div>

@@ -13,7 +13,7 @@
       "titleDropFile": "Drop the files here",
       "description": "You can upload a file with {size} MB",
       "fileRejected": "File {name} was rejected",
-      "cannotUploadFiles": "Cannot upload more than ${max} files",
+      "cannotUploadFiles": "Cannot upload more than {max} files",
       "fileUploadMessage": "{count, plural, one {# file uploaded} other {# files uploaded}}"
     },
     "Navbar": {
@@ -29,12 +29,10 @@
         "lengthName": "Tên sản phẩm có ít nhất 3~100 kí tự",
         "marketPriceRequired": "Market price is required",
         "invalidMarketPrice": "Invalid market price",
-        "minMarketPrice": "Giá mua có giá tối thiểu 500 ₫",
-        "maxMarketPrice": "Giá bán có giá tối đa 500.000 ₫",
+        "minMaxMarketPrice": "Giá mua có giá tối thiểu {min}~{max}",
         "salePriceRequired": "Sale price is required",
         "invalidSalePrice": "Invalid sale price",
-        "minSalePrice": "Giá bán có giá tối thiểu 500 ₫",
-        "maxSalePrice": "Giá bán có giá tối đa 500.000 ₫",
+        "minMaxSalePrice": "Giá bán có giá tối thiểu {min}~{max}",
         "existName": "Product name is exist"
       },
 
@@ -49,6 +47,7 @@
       },
 
       "CreatePage": {
+        "hintFillInfo": "Suggested information filling",
         "titleBtnCreate": "Add new",
         "basicInfo": "Basic Information",
         "saleInfo": "Sale Information"

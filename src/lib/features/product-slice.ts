@@ -1,4 +1,4 @@
-import { Product } from "@/types/product";
+import { Product, ProductFilterProps } from "@/types/product";
 import { createSlice } from "@reduxjs/toolkit";
 import type { Dispatch, PayloadAction } from "@reduxjs/toolkit";
 import * as api from "@/lib/services/product";
@@ -87,17 +87,18 @@ export const {
 } = productSlice.actions;
 export default productSlice.reducer;
 
-export const getAllProducts = () => async (dispatch: Dispatch) => {
-  try {
-    dispatch(startLoading());
-    const { data } = await api.getAllProducts();
-    dispatch(getAll(data || []));
-  } catch (e: any) {
-    dispatch(hasError(e?.response?.data || e));
-  } finally {
-    dispatch(stopLoading());
-  }
-};
+export const getAllProducts =
+  (filters?: ProductFilterProps) => async (dispatch: Dispatch) => {
+    try {
+      dispatch(startLoading());
+      const { data } = await api.getAllProducts(filters);
+      dispatch(getAll(data || []));
+    } catch (e: any) {
+      dispatch(hasError(e?.response?.data || e));
+    } finally {
+      dispatch(stopLoading());
+    }
+  };
 
 export const createProduct =
   (payload: FormData) => async (dispatch: Dispatch) => {

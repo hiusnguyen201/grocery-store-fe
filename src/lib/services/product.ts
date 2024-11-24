@@ -1,4 +1,4 @@
-import { Product } from "@/types/product";
+import { Product, ProductFilterProps } from "@/types/product";
 import { apiInstance } from "@/lib/services";
 
 const PREFIX = "/products";
@@ -13,7 +13,10 @@ export const createProduct = (data: FormData) =>
 export const getBoard = (identify: string) =>
   apiInstance.get(`${PREFIX}/${identify}`);
 
-export const getAllProducts = () => apiInstance.get(`${PREFIX}`);
+export const getAllProducts = (filters?: ProductFilterProps) =>
+  apiInstance.get(
+    `${PREFIX}?${new URLSearchParams(filters as Record<string, string>)}`
+  );
 
 export const updateBoard = (identify: string, data: Partial<Product>) =>
   apiInstance.patch(`${PREFIX}/${identify}`, data);

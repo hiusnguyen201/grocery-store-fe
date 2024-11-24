@@ -20,3 +20,10 @@ export type PriceHistory = {
   createdAt: Date;
   updatedAt: Date;
 };
+
+export type ProductFilterProps = {
+  page?: number;
+  limit?: number;
+  status?: string;
+  name?: string;
+};
