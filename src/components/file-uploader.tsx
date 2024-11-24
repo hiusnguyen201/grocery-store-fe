@@ -13,7 +13,7 @@ import { Progress } from "@/components/ui/progress";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useControllableState } from "@/hooks/use-controllable-state";
 import { cn, formatBytes } from "@/lib/utils";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "@/hooks/use-toast";
 import { useTranslations } from "next-intl";
 import { Label } from "@/components/ui/label";
 
@@ -94,8 +94,6 @@ interface FileUploaderProps extends React.HTMLAttributes<HTMLDivElement> {
   disabled?: boolean;
 
   label?: React.ReactNode | string;
-  name?: string;
-  id?: string;
 }
 
 export function FileUploader(props: FileUploaderProps) {
@@ -111,13 +109,10 @@ export function FileUploader(props: FileUploaderProps) {
     disabled = false,
     label,
     className,
-    name,
-    id,
     ...dropzoneProps
   } = props;
   const tUpload = useTranslations("Dashboard.Upload");
   const tCommon = useTranslations("Dashboard.Common");
-  const { toast } = useToast();
 
   const [files, setFiles] = useControllableState({
     prop: valueProp,
@@ -234,8 +229,8 @@ export function FileUploader(props: FileUploaderProps) {
   const isDisabled = disabled || (files?.length ?? 0) >= maxFiles;
 
   return (
-    <div className="w-full">
-      <Label htmlFor={props.id}>{label}</Label>
+    <div>
+      <Label>{label}</Label>
       <div className="relative flex flex-col gap-6 overflow-hidden">
         <Dropzone
           onDrop={onDrop}
@@ -257,7 +252,7 @@ export function FileUploader(props: FileUploaderProps) {
               )}
               {...dropzoneProps}
             >
-              <input id={id} name={name} {...getInputProps()} />
+              <input {...getInputProps()} />
               {isDragActive ? (
                 <div className="flex flex-col items-center justify-center gap-4 sm:px-5">
                   <div className="rounded-full border border-dashed p-3">

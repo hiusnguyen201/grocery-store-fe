@@ -93,8 +93,36 @@ export const getAllProducts = () => async (dispatch: Dispatch) => {
     const { data } = await api.getAllProducts();
     dispatch(getAll(data || []));
   } catch (e: any) {
-    dispatch(hasError(e));
+    dispatch(hasError(e?.response?.data || e));
   } finally {
     dispatch(stopLoading());
   }
 };
+
+export const createProduct =
+  (payload: FormData) => async (dispatch: Dispatch) => {
+    try {
+      dispatch(startLoading());
+      const { data } = await api.createProduct(payload);
+      dispatch(create(data || {}));
+    } catch (e: any) {
+      console.log(e?.response);
+
+      dispatch(hasError(e?.response?.data || e));
+    } finally {
+      dispatch(stopLoading());
+    }
+  };
+
+export const checkNameExists =
+  (id: string) => async (dispatch: Dispatch) => {
+    try {
+      dispatch(startLoading());
+      const data = await api.checkNameExists(id);
+      return Boolean(data);
+    } catch (e: any) {
+      return false;
+    } finally {
+      dispatch(stopLoading());
+    }
+  };

@@ -3,7 +3,6 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { Badge } from "@/components/ui/badge";
 import { CellActions } from "./cell-actions";
-import Image from "next/image";
 import {
   DataTableSelectCell,
   DataTableSelectHeader,
@@ -11,9 +10,9 @@ import {
 import { Product } from "@/types/product";
 import { useMemo } from "react";
 import { useTranslations } from "next-intl";
-import { TextFormatter } from "@/components/text-formatter";
+import { formatCurrency, formatDate } from "@/lib/utils";
 
-export function GetColumns() {
+export function getColumns() {
   const t = useTranslations("Dashboard.ProductsPage");
   const columns: ColumnDef<Product>[] = useMemo(
     () => [
@@ -29,17 +28,14 @@ export function GetColumns() {
         accessorKey: "image",
         header: t("imageField"),
         cell: ({ row }) => {
-          if (!row.getValue("image")) return <></>;
+          const { image, name } = row.original;
+          if (!image) return <></>;
           return (
-            <div className="relative w-[35px] h-full">
-              <Image
-                src={row.getValue("image")}
-                alt={row.getValue("name")}
-                fill
-                className="rounded"
-                sizes="100%"
-              />
-            </div>
+            <img
+              src={image}
+              alt={name}
+              className="rounded w-[45px] h-full"
+            />
           );
         },
       },
@@ -49,25 +45,21 @@ export function GetColumns() {
         header: t("nameProductField"),
       },
       {
-        id: "marketPrice",
-        accessorKey: "marketPrice",
-        header: t("marketPriceField"),
-      },
-      {
         id: "salePrice",
         accessorKey: "salePrice",
         header: t("salePriceField"),
+        cell: ({ row }) => {
+          const { priceHistories } = row.original;
+          return formatCurrency(priceHistories[0].salePrice);
+        },
       },
       {
         id: "status",
         accessorKey: "status",
         header: t("statusField"),
         cell: ({ row }) => {
-          return (
-            <Badge className="py-1">
-              {t(`status${row.getValue("status")}`)}
-            </Badge>
-          );
+          const { status } = row.original;
+          return <Badge className="py-1">{t(`status${status}`)}</Badge>;
         },
       },
       {
@@ -75,16 +67,20 @@ export function GetColumns() {
         accessorKey: "createdAt",
         header: t("createdAtField"),
         cell: ({ row }) => {
-          return (
-            <TextFormatter type="date" value={row.getValue("createdAt")} />
-          );
+          const { createdAt } = row.original;
+          return formatDate(createdAt, {
+            type: "short",
+          });
         },
       },
       {
         id: "actions",
         enableSorting: false,
         enableHiding: false,
-        cell: ({ row }) => <CellActions data={row.original as Product} />,
+        cell: ({ row }) => {
+          const data = row.original;
+          return <CellActions data={data} />;
+        },
       },
     ],
     [t]

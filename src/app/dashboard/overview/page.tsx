@@ -1,6 +1,6 @@
 export default function OverviewPage() {
   return (
-    <div className="flex flex-col h-full gap-4">
+    <div className="md:px-6 p-4 flex flex-col h-full gap-4">
       <div className="grid auto-rows-min gap-4 md:grid-cols-3">
         <div className="aspect-video rounded-xl bg-muted/50" />
         <div className="aspect-video rounded-xl bg-muted/50" />

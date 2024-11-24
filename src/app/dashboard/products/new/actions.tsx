@@ -2,14 +2,17 @@
 
 import { AlertDialogManual } from "@/components/alert-dialog-manual";
 import { Button } from "@/components/ui/button";
+import { ProductStatus } from "@/constants";
 import { useTranslations } from "next-intl";
 import { redirect } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export default function Actions({
   disableAction,
+  onStatusChange,
 }: {
   disableAction: boolean;
+  onStatusChange?: (value: ProductStatus) => void;
 }) {
   const [hrefOut, setHrefOut] = useState("/dashboard/products");
   const [openAlert, setOpenAlert] = useState(false);
@@ -18,8 +21,8 @@ export default function Actions({
   // Alert cancel
   useEffect(() => {
     const handleClick = (e: any) => {
-      e.preventDefault();
       if (e.target.tagName === "A") {
+        e.preventDefault();
         const href = e.target.getAttribute("href");
         setHrefOut(href);
         setOpenAlert(true);
@@ -34,7 +37,7 @@ export default function Actions({
   }, []);
 
   return (
-    <div className="sticky shadow-reverse mb-[-16px] mx-[-16px] md:mx-[-24px] mt-5 bg-[#fff] border-t bottom-0 p-4 md:px-6 flex gap-3 items-center justify-end transition-[width,height] ease-linear h-16 group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12">
+    <div className="sticky shadow-reverse bg-[#fff] border-t bottom-0 p-4 md:px-6 flex gap-3 items-center justify-end transition-[width,height] ease-linear h-16 group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12">
       <AlertDialogManual
         open={openAlert}
         onOpenChange={setOpenAlert}
@@ -49,10 +52,25 @@ export default function Actions({
           redirect(hrefOut);
         }}
       />
-      <Button disabled={disableAction} type="submit" variant="outline">
+      <Button
+        disabled={disableAction}
+        type="submit"
+        variant="outline"
+        onClick={() => {
+          if (!onStatusChange) return;
+          onStatusChange(ProductStatus.INACTIVE);
+        }}
+      >
         {t("titleBtnSaveAndHide")}
       </Button>
-      <Button type="submit" disabled={disableAction}>
+      <Button
+        type="submit"
+        disabled={disableAction}
+        onClick={() => {
+          if (!onStatusChange) return;
+          onStatusChange(ProductStatus.ACTIVE);
+        }}
+      >
         {t("titleBtnSaveAndShow")}
       </Button>
     </div>

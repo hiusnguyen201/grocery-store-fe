@@ -12,7 +12,7 @@ export default function ProductsPage() {
   const t = useTranslations("Dashboard.ProductsPage");
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 p-4 md:px-6">
       <div className="flex items-start justify-between">
         <Heading
           title={t("Heading.title")}

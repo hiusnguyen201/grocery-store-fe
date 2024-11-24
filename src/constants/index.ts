@@ -16,3 +16,5 @@ export enum ProductStatus {
   ACTIVE = "Active",
   INACTIVE = "Inactive",
 }
+
+export const LIMIT_PAGE = [5, 10, 20, 30, 40, 50];

@@ -31,6 +31,7 @@ import {
 } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { MetaData } from "@/types/meta";
+import { LIMIT_PAGE } from "@/constants";
 
 type DataTableProps<TData, TValue> = {
   columns: ColumnDef<TData, TValue>[];
@@ -124,7 +125,7 @@ export function DataTable<TData, TValue>({
             {tCommon("rowsPerPage")}
           </p>
           <Select
-            value={`${5}`}
+            value={String(LIMIT_PAGE[0])}
             onValueChange={(value) => {
               table.setPageSize(Number(value));
             }}
@@ -133,7 +134,7 @@ export function DataTable<TData, TValue>({
               <SelectValue placeholder={10} />
             </SelectTrigger>
             <SelectContent side="top">
-              {[5, 10, 20, 30, 40, 50].map((pageSize) => (
+              {LIMIT_PAGE.map((pageSize) => (
                 <SelectItem key={pageSize} value={`${pageSize}`}>
                   {pageSize}
                 </SelectItem>

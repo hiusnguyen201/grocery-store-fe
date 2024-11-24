@@ -24,15 +24,23 @@
     },
     "ProductsPage": {
       "Validation": {
-        "nameRequired": "Không được để trống",
-        "stringName": "Tên phải là các kí tự",
+        "nameRequired": "Name is required",
+        "stringName": "Name must be string",
         "lengthName": "Tên sản phẩm có ít nhất 3~100 kí tự",
-        "marketPriceRequired": "Không được để trống",
-        "invalidMarketPrice": "Giá mua không hợp lệ",
+        "marketPriceRequired": "Market price is required",
+        "invalidMarketPrice": "Invalid market price",
         "minMarketPrice": "Giá mua có giá tối thiểu 500 ₫",
-        "salePriceRequired": "Không được để trống",
-        "invalidSalePrice": "Giá bán không hợp lệ",
-        "minSalePrice": "Giá bán có giá tối thiểu 500 ₫"
+        "maxMarketPrice": "Giá bán có giá tối đa 500.000 ₫",
+        "salePriceRequired": "Sale price is required",
+        "invalidSalePrice": "Invalid sale price",
+        "minSalePrice": "Giá bán có giá tối thiểu 500 ₫",
+        "maxSalePrice": "Giá bán có giá tối đa 500.000 ₫",
+        "existName": "Product name is exist"
+      },
+
+      "Messages": {
+        "createProductSuccess": "Create product successfully",
+        "createProductFailed": "Create product failed"
       },
 
       "Heading": {

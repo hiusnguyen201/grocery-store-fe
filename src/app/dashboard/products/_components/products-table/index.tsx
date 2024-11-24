@@ -1,8 +1,8 @@
 "use client";
 import { DataTable } from "@/components/table/data-table";
-import { GetColumns } from "./columns";
+import { getColumns } from "./columns";
 import { DataTableSearch } from "@/components/table/data-table-search";
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { ProductStatus } from "@/constants";
 import { DataTableFilterBox } from "@/components/table/data-table-filter-box";
 import { useTranslations } from "next-intl";
@@ -24,7 +24,7 @@ export function ProductsTable() {
   }, [dispatch]);
 
   return (
-    <>
+    <Fragment>
       <div className="flex flex-wrap items-center gap-4">
         <DataTableSearch
           id="name"
@@ -48,10 +48,10 @@ export function ProductsTable() {
 
       <DataTable
         cellHeight="70px"
-        columns={GetColumns()}
+        columns={getColumns()}
         data={list}
         metaData={meta}
       />
-    </>
+    </Fragment>
   );
 }

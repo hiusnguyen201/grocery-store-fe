@@ -5,8 +5,18 @@ export type Product = {
   name: string;
   slug?: string;
   image?: string;
-  marketPrice: number;
-  salePrice: number;
+  priceHistories: PriceHistory[];
   status: ProductStatus;
   createdAt: Date;
+  updatedAt: Date;
+};
+
+export type PriceHistory = {
+  _id: string;
+  product: string;
+  marketPrice: number;
+  salePrice: number;
+  valuationAt: Date;
+  createdAt: Date;
+  updatedAt: Date;
 };

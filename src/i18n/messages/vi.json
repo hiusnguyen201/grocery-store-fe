@@ -30,9 +30,17 @@
         "marketPriceRequired": "Không được để trống",
         "invalidMarketPrice": "Giá mua không hợp lệ",
         "minMarketPrice": "Giá mua có giá tối thiểu 500 ₫",
+        "maxMarketPrice": "Giá mua có giá tối đa 500.000 ₫",
         "salePriceRequired": "Không được để trống",
         "invalidSalePrice": "Giá bán không hợp lệ",
-        "minSalePrice": "Giá bán có giá tối thiểu 500 ₫"
+        "minSalePrice": "Giá bán có giá tối thiểu 500 ₫",
+        "maxSalePrice": "Giá bán có giá tối đa 500.000 ₫",
+        "existName": "Tên sản phẩm đã tồn tại"
+      },
+
+      "Messages": {
+        "createProductSuccess": "Thêm sản phẩm thành công",
+        "createProductFailed": "Thêm sản phẩm thất bại"
       },
 
       "Heading": {
