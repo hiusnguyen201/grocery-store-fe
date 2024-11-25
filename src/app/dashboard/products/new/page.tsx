@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import {
   Card,
   CardContent,
@@ -33,8 +33,15 @@ import {
 } from "./use-product-schema";
 
 export default function CreateProductPage() {
-  const { productSchema, minPriceFormat, maxPriceFormat } =
-    useProductSchema();
+  const { productSchema } = useProductSchema();
+  const { minPriceFormat, maxPriceFormat } = useMemo(
+    () => ({
+      minPriceFormat: formatCurrency(MIN_PRICE_PRODUCT),
+      maxPriceFormat: formatCurrency(MAX_PRICE_PRODUCT),
+    }),
+    []
+  );
+
   const t = useTranslations("Dashboard.ProductsPage");
   const { error, isLoading } = useAppSelector(
     (state: RootState) => state.product

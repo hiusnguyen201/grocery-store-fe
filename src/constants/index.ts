@@ -15,6 +15,7 @@ export const allowImageMimeTypes = [
 export enum ProductStatus {
   ACTIVE = "Active",
   INACTIVE = "Inactive",
+  DELETED = "Deleted",
 }
 
 export const LIMIT_PAGE = [10, 20, 30, 40, 50];

@@ -1,7 +1,7 @@
 import { Product, ProductFilterProps } from "@/types/product";
 import { createSlice } from "@reduxjs/toolkit";
 import type { Dispatch, PayloadAction } from "@reduxjs/toolkit";
-import * as api from "@/lib/services/product";
+import * as apiProduct from "@/lib/services/product";
 import { MetaData } from "@/types/meta";
 
 type ProductState = {
@@ -60,7 +60,7 @@ const productSlice = createSlice({
       state.error = null;
     },
     update(state, action: PayloadAction<Product>) {
-      state.list.map((item) =>
+      state.list = state.list.map((item) =>
         item._id === action.payload._id ? action.payload : item
       );
       state.error = null;
@@ -91,7 +91,7 @@ export const getAllProducts =
   (filters?: ProductFilterProps) => async (dispatch: Dispatch) => {
     try {
       dispatch(startLoading());
-      const { data } = await api.getAllProducts(filters);
+      const { data } = await apiProduct.getAllProducts(filters);
       dispatch(getAll(data || []));
     } catch (e: any) {
       dispatch(hasError(e?.response?.data || e));
@@ -104,7 +104,7 @@ export const createProduct =
   (payload: FormData) => async (dispatch: Dispatch) => {
     try {
       dispatch(startLoading());
-      const { data } = await api.createProduct(payload);
+      const { data } = await apiProduct.createProduct(payload);
       dispatch(create(data.data || {}));
     } catch (e: any) {
       dispatch(hasError(e?.response?.data || e));
@@ -113,11 +113,35 @@ export const createProduct =
     }
   };
 
+export const hideProduct = (id: string) => async (dispatch: Dispatch) => {
+  try {
+    dispatch(startLoading());
+    const { data } = await apiProduct.hideProduct(id);
+    dispatch(update(data.data || {}));
+  } catch (e: any) {
+    dispatch(hasError(e?.response?.data || e));
+  } finally {
+    dispatch(stopLoading());
+  }
+};
+
+export const showProduct = (id: string) => async (dispatch: Dispatch) => {
+  try {
+    dispatch(startLoading());
+    const { data } = await apiProduct.showProduct(id);
+    dispatch(update(data.data || {}));
+  } catch (e: any) {
+    dispatch(hasError(e?.response?.data || e));
+  } finally {
+    dispatch(stopLoading());
+  }
+};
+
 export const checkNameExists =
   (id: string) => async (dispatch: Dispatch) => {
     try {
       dispatch(startLoading());
-      const { data } = await api.checkNameExists(id);
+      const { data } = await apiProduct.checkNameExists(id);
       return data.data;
     } catch (e: any) {
       dispatch(hasError(e?.response?.data || e));

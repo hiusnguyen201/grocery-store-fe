@@ -13,8 +13,13 @@ export const MAX_LENGTH_NAME_PRODUCT = 100;
 export function useProductSchema() {
   const dispatch = useAppDispatch();
   const t = useTranslations("Dashboard.ProductsPage.Validation");
-  const minPriceFormat = formatCurrency(MIN_PRICE_PRODUCT);
-  const maxPriceFormat = formatCurrency(MAX_PRICE_PRODUCT);
+  const { minPriceFormat, maxPriceFormat } = useMemo(
+    () => ({
+      minPriceFormat: formatCurrency(MIN_PRICE_PRODUCT),
+      maxPriceFormat: formatCurrency(MAX_PRICE_PRODUCT),
+    }),
+    []
+  );
 
   const productSchema = useMemo(
     () =>

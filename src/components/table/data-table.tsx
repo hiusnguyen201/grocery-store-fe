@@ -4,6 +4,7 @@ import {
   ColumnDef,
   flexRender,
   getCoreRowModel,
+  Row,
   useReactTable,
 } from "@tanstack/react-table";
 import {
@@ -33,6 +34,8 @@ import { useTranslations } from "next-intl";
 import { MetaData } from "@/types/meta";
 import { LIMIT_PAGE } from "@/constants";
 import { Spinner } from "@/components/ui/spinner";
+import { useMemo } from "react";
+import { DataTableSkeleton } from "./data-table-skeleton";
 
 type DataTableProps<TData, TValue> = {
   columns: ColumnDef<TData, TValue>[];
@@ -70,8 +73,13 @@ export function DataTable<TData, TValue>({
 
   return (
     <div className="w-full">
-      <ScrollArea className="grid rounded-md border h-[calc(80vh-210px)] md:h-[calc(80vh-180px)] lg:h-[calc(80vh-150px)]">
-        <Table className="">
+      <ScrollArea className="relative grid rounded-md border h-[calc(80vh-210px)] md:h-[calc(80vh-180px)] lg:h-[calc(80vh-150px)]">
+        {loading && (
+          <div className="absolute w-full h-full bg-[#fff] opacity-70 z-10 rounded-md flex items-center justify-center">
+            <Spinner size={"large"} />
+          </div>
+        )}
+        <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
@@ -89,43 +97,32 @@ export function DataTable<TData, TValue>({
             ))}
           </TableHeader>
           <TableBody className="w-full align-middle">
-            {loading && (
+            {table.getRowModel().rows?.length ? (
+              table.getRowModel().rows.map((row) => (
+                <TableRow
+                  key={row.id}
+                  data-state={row.getIsSelected() && "selected"}
+                >
+                  {row.getVisibleCells().map((cell) => (
+                    <TableCell height={cellHeight} key={cell.id}>
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext()
+                      )}
+                    </TableCell>
+                  ))}
+                </TableRow>
+              ))
+            ) : (
               <TableRow>
                 <TableCell
                   colSpan={columns.length}
                   className="h-24 text-center"
                 >
-                  <Spinner />
+                  {tCommon("noResults")}
                 </TableCell>
               </TableRow>
             )}
-            {!loading &&
-              (table.getRowModel().rows?.length ? (
-                table.getRowModel().rows.map((row) => (
-                  <TableRow
-                    key={row.id}
-                    data-state={row.getIsSelected() && "selected"}
-                  >
-                    {row.getVisibleCells().map((cell) => (
-                      <TableCell height={cellHeight} key={cell.id}>
-                        {flexRender(
-                          cell.column.columnDef.cell,
-                          cell.getContext()
-                        )}
-                      </TableCell>
-                    ))}
-                  </TableRow>
-                ))
-              ) : (
-                <TableRow>
-                  <TableCell
-                    colSpan={columns.length}
-                    className="h-24 text-center"
-                  >
-                    {tCommon("noResults")}
-                  </TableCell>
-                </TableRow>
-              ))}
           </TableBody>
         </Table>
         <ScrollBar orientation="horizontal" />

@@ -5,10 +5,12 @@ export type Product = {
   name: string;
   slug?: string;
   image?: string;
+  normalizeName?: string;
   priceHistories: PriceHistory[];
   status: ProductStatus;
   createdAt: Date;
   updatedAt: Date;
+  hiddenAt?: Date;
 };
 
 export type PriceHistory = {

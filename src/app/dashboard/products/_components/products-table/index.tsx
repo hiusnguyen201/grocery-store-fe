@@ -9,12 +9,14 @@ import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { RootState } from "@/lib/store";
 import { getAllProducts } from "@/lib/features/product-slice";
 import { useTableFilters } from "./use-table-filters";
+import { useProductStatusOptions } from "./use-product-status-options";
 import { useRouter } from "next/navigation";
 import { useDebouncedCallback } from "use-debounce";
 
 export function ProductsTable() {
   const router = useRouter();
   const t = useTranslations("Dashboard.ProductsPage");
+  const { PRODUCT_STATUS_OPTIONS } = useProductStatusOptions();
   const { list, meta, isLoading } = useAppSelector(
     (state: RootState) => state.product
   );
@@ -27,7 +29,6 @@ export function ProductsTable() {
     setNameFilter,
     statusFilter,
     setStatusFilter,
-    PRODUCT_STATUS_OPTIONS,
     filters,
   } = useTableFilters({ metaData: meta });
 

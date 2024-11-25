@@ -1,11 +1,9 @@
 import { useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { LIMIT_PAGE, ProductStatus } from "@/constants";
-import { useTranslations } from "next-intl";
+import { LIMIT_PAGE } from "@/constants";
 import { MetaData } from "@/types/meta";
 
 export function useTableFilters({ metaData }: { metaData: MetaData }) {
-  const t = useTranslations("Dashboard.ProductsPage");
   const searchParams = useSearchParams();
   const [limit, setLimit] = useState<number>(() => {
     const value = searchParams.get("limit");
@@ -29,14 +27,6 @@ export function useTableFilters({ metaData }: { metaData: MetaData }) {
     searchParams.get("status")
   );
 
-  const PRODUCT_STATUS_OPTIONS = useMemo(
-    () => [
-      { label: t("statusActive"), value: ProductStatus.ACTIVE },
-      { label: t("statusInactive"), value: ProductStatus.INACTIVE },
-    ],
-    []
-  );
-
   const filters: Record<string, string> = useMemo(
     () => ({
       page: page.toString(),
@@ -48,7 +38,6 @@ export function useTableFilters({ metaData }: { metaData: MetaData }) {
   );
 
   return {
-    PRODUCT_STATUS_OPTIONS,
     page,
     nameFilter,
     limit,

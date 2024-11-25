@@ -11,9 +11,11 @@ import { Product } from "@/types/product";
 import { useMemo } from "react";
 import { useTranslations } from "next-intl";
 import { formatCurrency, formatDate } from "@/lib/utils";
+import { useProductStatusOptions } from "./use-product-status-options";
 
 export function getColumns() {
   const t = useTranslations("Dashboard.ProductsPage");
+  const { PRODUCT_STATUS_OPTIONS } = useProductStatusOptions();
   const columns: ColumnDef<Product>[] = useMemo(
     () => [
       {
@@ -64,7 +66,21 @@ export function getColumns() {
         cell: ({ row }) => {
           const { status } = row.original;
           if (!status) return <></>;
-          return <Badge className="py-1">{t(`status${status}`)}</Badge>;
+          const statusOpt = PRODUCT_STATUS_OPTIONS.find(
+            (opt) => status === opt.value
+          );
+          return (
+            <Badge
+              variant="outline"
+              style={{
+                backgroundColor: statusOpt?.bgColor,
+                color: statusOpt?.textColor,
+              }}
+              className="py-1"
+            >
+              {t(`status${statusOpt?.value}`)}
+            </Badge>
+          );
         },
       },
       {
