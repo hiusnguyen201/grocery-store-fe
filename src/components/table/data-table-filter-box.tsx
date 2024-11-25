@@ -20,7 +20,7 @@ import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
 import { CheckIcon, Plus } from "lucide-react";
 import { useTranslations } from "next-intl";
-import React, { Dispatch, SetStateAction } from "react";
+import React, { Dispatch, Fragment, SetStateAction } from "react";
 import {
   SelectContent,
   SelectTrigger,
@@ -65,39 +65,19 @@ export function DataTableFilterBox({
 
   const handleSelect = (value: string) => {
     const newSet = new Set(selectedValuesSet);
-    if (newSet.has(value)) {
-      newSet.delete(value);
+    if (multipleSelect) {
+      if (newSet.has(value)) {
+        newSet.delete(value);
+      } else {
+        newSet.add(value);
+      }
+      setFilterValue(Array.from(newSet).join(".") || null);
     } else {
-      newSet.add(value);
+      setFilterValue(newSet.has(value) ? null : value);
     }
-    setFilterValue(Array.from(newSet).join(".") || null);
   };
 
   const resetFilter = () => setFilterValue(null);
-
-  if (!multipleSelect) {
-    return (
-      <Select
-        value={filterValue ? filterValue : ""}
-        onValueChange={setFilterValue}
-      >
-        <SelectTrigger className="w-[180px]">
-          <SelectValue placeholder={placeholder} />
-        </SelectTrigger>
-        <SelectContent>
-          <SelectGroup>
-            {options.map((opt) => {
-              return (
-                <SelectItem key={opt.value} value={opt.value}>
-                  {opt.icon && <>{opt.icon}</>} {opt.label}
-                </SelectItem>
-              );
-            })}
-          </SelectGroup>
-        </SelectContent>
-      </Select>
-    );
-  }
 
   return (
     <Popover>
