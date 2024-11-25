@@ -105,10 +105,8 @@ export const createProduct =
     try {
       dispatch(startLoading());
       const { data } = await api.createProduct(payload);
-      dispatch(create(data || {}));
+      dispatch(create(data.data || {}));
     } catch (e: any) {
-      console.log(e?.response);
-
       dispatch(hasError(e?.response?.data || e));
     } finally {
       dispatch(stopLoading());
@@ -119,10 +117,10 @@ export const checkNameExists =
   (id: string) => async (dispatch: Dispatch) => {
     try {
       dispatch(startLoading());
-      const data = await api.checkNameExists(id);
-      return Boolean(data);
+      const { data } = await api.checkNameExists(id);
+      return data.data;
     } catch (e: any) {
-      return false;
+      dispatch(hasError(e?.response?.data || e));
     } finally {
       dispatch(stopLoading());
     }

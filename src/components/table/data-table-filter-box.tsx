@@ -21,6 +21,15 @@ import { cn } from "@/lib/utils";
 import { CheckIcon, Plus } from "lucide-react";
 import { useTranslations } from "next-intl";
 import React, { Dispatch, SetStateAction } from "react";
+import {
+  SelectContent,
+  SelectTrigger,
+  Select,
+  SelectValue,
+  SelectGroup,
+  SelectLabel,
+  SelectItem,
+} from "@/components/ui/select";
 
 type FilterOption = {
   value: string;
@@ -35,6 +44,7 @@ type FilterBoxProps = {
   options: FilterOption[];
   setFilterValue: Dispatch<SetStateAction<string | null>>;
   filterValue: string | null;
+  multipleSelect?: boolean;
 };
 
 export function DataTableFilterBox({
@@ -44,6 +54,7 @@ export function DataTableFilterBox({
   options,
   setFilterValue,
   filterValue,
+  multipleSelect = true,
 }: FilterBoxProps) {
   const t = useTranslations("Dashboard.Common");
   const selectedValuesSet = React.useMemo(() => {
@@ -63,6 +74,30 @@ export function DataTableFilterBox({
   };
 
   const resetFilter = () => setFilterValue(null);
+
+  if (!multipleSelect) {
+    return (
+      <Select
+        value={filterValue ? filterValue : ""}
+        onValueChange={setFilterValue}
+      >
+        <SelectTrigger className="w-[180px]">
+          <SelectValue placeholder={placeholder} />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectGroup>
+            {options.map((opt) => {
+              return (
+                <SelectItem key={opt.value} value={opt.value}>
+                  {opt.icon && <>{opt.icon}</>} {opt.label}
+                </SelectItem>
+              );
+            })}
+          </SelectGroup>
+        </SelectContent>
+      </Select>
+    );
+  }
 
   return (
     <Popover>

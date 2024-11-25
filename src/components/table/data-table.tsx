@@ -32,6 +32,7 @@ import {
 import { useTranslations } from "next-intl";
 import { MetaData } from "@/types/meta";
 import { LIMIT_PAGE } from "@/constants";
+import { Spinner } from "@/components/ui/spinner";
 
 type DataTableProps<TData, TValue> = {
   columns: ColumnDef<TData, TValue>[];
@@ -42,6 +43,7 @@ type DataTableProps<TData, TValue> = {
   onNext?: () => void;
   limit?: number;
   onLimitChange?: (value: number) => void;
+  loading?: boolean;
 };
 
 export function DataTable<TData, TValue>({
@@ -53,6 +55,7 @@ export function DataTable<TData, TValue>({
   onNext,
   limit,
   onLimitChange,
+  loading,
 }: DataTableProps<TData, TValue>) {
   const tPage = useTranslations("Dashboard.ProductsPage");
   const tCommon = useTranslations("Dashboard.Common");
@@ -67,8 +70,8 @@ export function DataTable<TData, TValue>({
 
   return (
     <div className="w-full">
-      <ScrollArea className="grid h-[calc(80vh-210px)] rounded-md border md:h-[calc(80vh-180px)] lg:h-[calc(80vh-150px)]">
-        <Table>
+      <ScrollArea className="grid rounded-md border h-[calc(80vh-210px)] md:h-[calc(80vh-180px)] lg:h-[calc(80vh-150px)]">
+        <Table className="">
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
@@ -85,33 +88,44 @@ export function DataTable<TData, TValue>({
               </TableRow>
             ))}
           </TableHeader>
-          <TableBody>
-            {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map((row) => (
-                <TableRow
-                  key={row.id}
-                  data-state={row.getIsSelected() && "selected"}
-                >
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell height={cellHeight} key={cell.id}>
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
-                    </TableCell>
-                  ))}
-                </TableRow>
-              ))
-            ) : (
+          <TableBody className="w-full align-middle">
+            {loading && (
               <TableRow>
                 <TableCell
                   colSpan={columns.length}
                   className="h-24 text-center"
                 >
-                  {tCommon("noResults")}
+                  <Spinner />
                 </TableCell>
               </TableRow>
             )}
+            {!loading &&
+              (table.getRowModel().rows?.length ? (
+                table.getRowModel().rows.map((row) => (
+                  <TableRow
+                    key={row.id}
+                    data-state={row.getIsSelected() && "selected"}
+                  >
+                    {row.getVisibleCells().map((cell) => (
+                      <TableCell height={cellHeight} key={cell.id}>
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext()
+                        )}
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell
+                    colSpan={columns.length}
+                    className="h-24 text-center"
+                  >
+                    {tCommon("noResults")}
+                  </TableCell>
+                </TableRow>
+              ))}
           </TableBody>
         </Table>
         <ScrollBar orientation="horizontal" />

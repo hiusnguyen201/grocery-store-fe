@@ -25,4 +25,6 @@ export const deleteBoard = (identify: string) =>
   apiInstance.delete(`${PREFIX}/${identify}`);
 
 export const checkNameExists = (identify: string) =>
-  apiInstance.head(`${PREFIX}/${identify}`);
+  apiInstance.post(`${PREFIX}/is-exist`, {
+    id: identify,
+  });

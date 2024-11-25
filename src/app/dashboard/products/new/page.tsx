@@ -36,9 +36,10 @@ export default function CreateProductPage() {
   const { productSchema, minPriceFormat, maxPriceFormat } =
     useProductSchema();
   const t = useTranslations("Dashboard.ProductsPage");
-  const { error } = useAppSelector((state: RootState) => state.product);
+  const { error, isLoading } = useAppSelector(
+    (state: RootState) => state.product
+  );
   const dispatch = useAppDispatch();
-  const [nameChanged, setNameChanged] = useState(false);
 
   const formik = useFormik({
     initialValues: {
@@ -61,6 +62,11 @@ export default function CreateProductPage() {
       }
 
       dispatch(createProduct(formData));
+
+      if (!isLoading && !error) {
+        setFieldValue("image", []);
+        resetForm();
+      }
     },
     validationSchema: productSchema,
     validateOnChange: false,
@@ -75,10 +81,11 @@ export default function CreateProductPage() {
     isValid,
     touched,
     resetForm,
-    submitCount,
+    handleChange,
     setFieldValue,
     validateField,
     handleBlur,
+    submitCount,
     dirty,
   } = formik;
 
@@ -89,15 +96,13 @@ export default function CreateProductPage() {
         title: t("Messages.createProductSuccess"),
         variant: "success",
       });
-      resetForm();
-      setFieldValue("image", []);
     } else {
       toast({
         title: t("Messages.createProductFailed"),
         variant: "destructive",
       });
     }
-  }, [error, submitCount]);
+  }, [error, submitCount, isLoading]);
 
   return (
     <>
@@ -195,16 +200,10 @@ export default function CreateProductPage() {
                     error={!!(touched.name && errors.name)}
                     id="name"
                     name="name"
-                    onChange={async (e) => {
-                      setNameChanged(true);
-                      setFieldValue("name", e.target.value);
-                    }}
+                    onChange={handleChange}
                     onBlur={(e) => {
-                      if (nameChanged || !values.name) {
-                        handleBlur(e);
-                        validateField("name");
-                        setNameChanged(false);
-                      }
+                      handleBlur(e);
+                      validateField("name");
                     }}
                     value={values.name}
                     helperText={touched.name && errors.name}
@@ -240,10 +239,9 @@ export default function CreateProductPage() {
                     name="marketPrice"
                     onChange={(e) => {
                       if (Number(e.target.value) >= MAX_PRICE_PRODUCT) {
-                        setFieldValue("marketPrice", MAX_PRICE_PRODUCT);
-                      } else if (Number(e.target.value) >= 0) {
-                        setFieldValue("marketPrice", +e.target.value);
+                        e.target.value = MAX_PRICE_PRODUCT.toString();
                       }
+                      handleChange(e);
                     }}
                     onBlur={(e) => {
                       handleBlur(e);
@@ -267,10 +265,9 @@ export default function CreateProductPage() {
                     name="salePrice"
                     onChange={(e) => {
                       if (Number(e.target.value) >= MAX_PRICE_PRODUCT) {
-                        setFieldValue("salePrice", MAX_PRICE_PRODUCT);
-                      } else if (Number(e.target.value) >= 0) {
-                        setFieldValue("salePrice", +e.target.value);
+                        e.target.value = MAX_PRICE_PRODUCT.toString();
                       }
+                      handleChange(e);
                     }}
                     onBlur={(e) => {
                       handleBlur(e);

@@ -63,6 +63,7 @@
       "placeholderSearchBox": "Search name...",
       "placeholderStatusFilterBox": "Status",
 
+      "allStatus": "All status",
       "statusActive": "Active",
       "statusInactive": "Inactive",
 

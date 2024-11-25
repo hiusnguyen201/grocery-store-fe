@@ -1,4 +1,4 @@
-export const MAX_UPLOAD_FILE_SIZE = 1024 * 1024 * 2; // 2MB
+export const MAX_UPLOAD_FILE_SIZE = 1024 * 1024; // 2MB
 
 // Follow react-dropzone accepts, prefix: "image/*"
 export const allowImageMimeTypes = [
@@ -17,4 +17,4 @@ export enum ProductStatus {
   INACTIVE = "Inactive",
 }
 
-export const LIMIT_PAGE = [5, 10, 20, 30, 40, 50];
+export const LIMIT_PAGE = [10, 20, 30, 40, 50];

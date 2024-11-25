@@ -2,16 +2,26 @@ import { useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { LIMIT_PAGE, ProductStatus } from "@/constants";
 import { useTranslations } from "next-intl";
+import { MetaData } from "@/types/meta";
 
-export function useTableFilters() {
+export function useTableFilters({ metaData }: { metaData: MetaData }) {
   const t = useTranslations("Dashboard.ProductsPage");
   const searchParams = useSearchParams();
-  const [page, setPage] = useState<number>(
-    Number(searchParams.get("page") || 1)
-  );
-  const [limit, setLimit] = useState<number>(
-    Number(searchParams.get("limit") || LIMIT_PAGE[0])
-  );
+  const [limit, setLimit] = useState<number>(() => {
+    const value = searchParams.get("limit");
+    if (!value) {
+      return LIMIT_PAGE[0];
+    }
+    return LIMIT_PAGE.includes(+value) ? +value : LIMIT_PAGE[0];
+  });
+  const [page, setPage] = useState<number>(() => {
+    const value = searchParams.get("page");
+    if (!value || +value < 1 || +value > metaData.totalPage) {
+      return 1;
+    } else {
+      return +value;
+    }
+  });
   const [nameFilter, setNameFilter] = useState<string | null>(
     searchParams.get("name")
   );

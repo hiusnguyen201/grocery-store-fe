@@ -35,9 +35,30 @@ export function useProductSchema() {
               max: MAX_LENGTH_NAME_PRODUCT,
             })
           )
-          .test("uniqueName", t("existName"), async (value) => {
-            return !(await dispatch(checkNameExists(value)));
-          }),
+          .test(
+            "uniqueName",
+            t("existName"),
+            async function (val: string) {
+              if (!val) {
+                return this.createError({ message: t("nameRequired") });
+              }
+
+              if (
+                !(
+                  this.parent.name.length >= MIN_LENGTH_NAME_PRODUCT &&
+                  this.parent.name.length <= MAX_LENGTH_NAME_PRODUCT
+                )
+              ) {
+                return this.createError({
+                  message: t("lengthName", {
+                    min: MIN_LENGTH_NAME_PRODUCT,
+                    max: MAX_LENGTH_NAME_PRODUCT,
+                  }),
+                });
+              }
+              return !(await dispatch(checkNameExists(val)));
+            }
+          ),
         marketPrice: Yup.number()
           .required(t("marketPriceRequired"))
           .integer(t("invalidMarketPrice"))

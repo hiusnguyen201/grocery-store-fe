@@ -50,7 +50,11 @@ export function getColumns() {
         header: t("salePriceField"),
         cell: ({ row }) => {
           const { priceHistories } = row.original;
-          return formatCurrency(priceHistories[0].salePrice);
+          if (priceHistories && priceHistories.length > 0) {
+            return formatCurrency(priceHistories[0].salePrice);
+          } else {
+            return <></>;
+          }
         },
       },
       {
@@ -59,6 +63,7 @@ export function getColumns() {
         header: t("statusField"),
         cell: ({ row }) => {
           const { status } = row.original;
+          if (!status) return <></>;
           return <Badge className="py-1">{t(`status${status}`)}</Badge>;
         },
       },
@@ -68,6 +73,7 @@ export function getColumns() {
         header: t("createdAtField"),
         cell: ({ row }) => {
           const { createdAt } = row.original;
+          if (!createdAt) return <></>;
           return formatDate(createdAt, {
             type: "short",
           });

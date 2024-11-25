@@ -2,7 +2,7 @@
 import { DataTable } from "@/components/table/data-table";
 import { getColumns } from "./columns";
 import { DataTableSearch } from "@/components/table/data-table-search";
-import { Fragment, useEffect } from "react";
+import { Fragment, useCallback, useEffect, useRef } from "react";
 import { DataTableFilterBox } from "@/components/table/data-table-filter-box";
 import { useTranslations } from "next-intl";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
@@ -10,11 +10,12 @@ import { RootState } from "@/lib/store";
 import { getAllProducts } from "@/lib/features/product-slice";
 import { useTableFilters } from "./use-table-filters";
 import { useRouter } from "next/navigation";
+import { useDebouncedCallback } from "use-debounce";
 
 export function ProductsTable() {
   const router = useRouter();
   const t = useTranslations("Dashboard.ProductsPage");
-  const { list, meta } = useAppSelector(
+  const { list, meta, isLoading } = useAppSelector(
     (state: RootState) => state.product
   );
   const {
@@ -28,13 +29,31 @@ export function ProductsTable() {
     setStatusFilter,
     PRODUCT_STATUS_OPTIONS,
     filters,
-  } = useTableFilters();
+  } = useTableFilters({ metaData: meta });
+
+  const prevNameFilterRef = useRef(nameFilter);
 
   const dispatch = useAppDispatch();
-  useEffect(() => {
+
+  const handleGetAllProducts = useCallback(() => {
     router.push(`/dashboard/products?${new URLSearchParams(filters)}`);
     dispatch(getAllProducts(filters));
-  }, [dispatch, page, limit, nameFilter, statusFilter]);
+  }, [dispatch, page, limit, statusFilter, nameFilter]);
+
+  const debouncedHandleGetAllProducts = useDebouncedCallback(
+    handleGetAllProducts,
+    500
+  );
+
+  useEffect(() => {
+    if (prevNameFilterRef.current !== nameFilter) {
+      debouncedHandleGetAllProducts();
+      prevNameFilterRef.current = nameFilter;
+      return;
+    }
+
+    handleGetAllProducts();
+  }, [dispatch, page, limit, statusFilter, nameFilter]);
 
   return (
     <Fragment>
@@ -47,6 +66,7 @@ export function ProductsTable() {
           setValue={setNameFilter}
         />
         <DataTableFilterBox
+          multipleSelect={false}
           id="status"
           name="status"
           placeholder={t("placeholderStatusFilterBox")}
@@ -57,6 +77,7 @@ export function ProductsTable() {
       </div>
 
       <DataTable
+        loading={isLoading}
         cellHeight="70px"
         columns={getColumns()}
         data={list}
