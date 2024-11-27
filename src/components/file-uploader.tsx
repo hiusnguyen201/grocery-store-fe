@@ -32,7 +32,7 @@ interface FileUploaderProps extends React.HTMLAttributes<HTMLDivElement> {
    * @default undefined
    * @example onValueChange={(files) => setFiles(files)}
    */
-  onValueChange?: React.Dispatch<React.SetStateAction<File[]>>;
+  onValueChange?: (files: File[]) => void;
 
   /**
    * Function to be called when files are uploaded.

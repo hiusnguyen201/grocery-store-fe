@@ -17,10 +17,12 @@
       "fileUploadMessage": "{count, plural, one {# tệp tin đã tải lên} other {# tệp tin đã tải lên}}"
     },
     "Navbar": {
-      "dashboard": "Tổng quan",
+      "dashboard": "Trang chủ",
+      "overview": "Tổng quan",
       "products": "Sản phẩm",
       "newProduct": "Thêm sản phẩm",
-      "settings": "Cài đặt"
+      "settings": "Cài đặt",
+      "new": "Thêm mới"
     },
     "ProductsPage": {
       "Validation": {
@@ -38,7 +40,11 @@
 
       "Messages": {
         "createProductSuccess": "Thêm sản phẩm thành công",
-        "createProductFailed": "Thêm sản phẩm thất bại"
+        "createProductFailed": "Thêm sản phẩm thất bại",
+        "updateProductSuccess": "Sửa sản phẩm thành công",
+        "updateProductFailed": "Sửa sản phẩm thất bại",
+        "deleteProductSuccess": "Xóa sản phẩm thành công",
+        "deleteProductFailed": "Xóa sản phẩm thất bại"
       },
 
       "Heading": {
@@ -63,23 +69,30 @@
       "placeholderSearchBox": "Tìm kiếm tên...",
       "placeholderStatusFilterBox": "Trạng thái",
 
+      "titleShowingEntries": "Hiển thị {from} đến {to} trong số {total} mục",
+      "titleShowingPages": "Trang {current} trong {total} trang",
+
       "allStatus": "Tất cả trạng thái",
       "statusActive": "Hoạt động",
       "statusInactive": "Không hoạt động",
 
       "titleCellActions": "Thao tác",
-      "titleDetailsAction": "Xem chi tiết",
-      "titleEditAction": "Sửa thông tin",
-      "titleHideAction": "Ẩn",
-      "titleShowAction": "Hiện",
-      "titleDeleteAction": "Xóa",
+      "titleDetailsCellAction": "Xem chi tiết",
+      "titleEditCellAction": "Sửa thông tin",
+      "titleHideCellAction": "Ẩn",
+      "titleShowCellAction": "Hiện",
+      "titleDeleteCellAction": "Xóa",
 
-      "titleShowingEntries": "Hiển thị {from} đến {to} trong số {total} mục",
-      "titleShowingPages": "Trang {current} trong {total} trang",
+      "titleAlertDialogDelete": "Bạn chắc chắn ?",
+      "descriptionAlertDialogDelete": "Không thể hoàn tác hành động này. Thao tác này sẽ vĩnh viễn xóa sản phẩm khỏi máy chủ.",
+      "titleAlertDialogCancelCreateOrUpdate": "Xác nhận",
+      "descriptionAlertDialogCancelCreateOrUpdate": "Hủy thay đổi",
 
       "titleBtnCancel": "Hủy bỏ",
       "titleBtnSaveAndHide": "Lưu & Ẩn",
-      "titleBtnSaveAndShow": "Lưu & Hiện thị"
+      "titleBtnSaveAndShow": "Lưu & Hiện thị",
+      "titleBtnCancelAlertDialog": "Quay lại",
+      "titleBtnContinueAlertDialog": "Tiếp tục"
     }
   }
 }

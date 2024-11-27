@@ -11,15 +11,10 @@ export const MIN_LENGTH_NAME_PRODUCT = 4;
 export const MAX_LENGTH_NAME_PRODUCT = 100;
 
 export function useProductSchema() {
-  const dispatch = useAppDispatch();
   const t = useTranslations("Dashboard.ProductsPage.Validation");
-  const { minPriceFormat, maxPriceFormat } = useMemo(
-    () => ({
-      minPriceFormat: formatCurrency(MIN_PRICE_PRODUCT),
-      maxPriceFormat: formatCurrency(MAX_PRICE_PRODUCT),
-    }),
-    []
-  );
+  const dispatch = useAppDispatch();
+  const minPriceFormat = formatCurrency(MIN_PRICE_PRODUCT);
+  const maxPriceFormat = formatCurrency(MAX_PRICE_PRODUCT);
 
   const productSchema = useMemo(
     () =>
@@ -61,7 +56,10 @@ export function useProductSchema() {
                   }),
                 });
               }
-              return !(await dispatch(checkNameExists(val)));
+
+              return !(await dispatch(
+                checkNameExists(val, this.parent?._id)
+              ));
             }
           ),
         marketPrice: Yup.number()
@@ -101,7 +99,7 @@ export function useProductSchema() {
             })
           ),
       }),
-    []
+    [t]
   );
   return { productSchema, minPriceFormat, maxPriceFormat };
 }

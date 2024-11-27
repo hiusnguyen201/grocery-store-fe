@@ -1,85 +1,98 @@
 {
   "Dashboard": {
     "Common": {
-      "clearFilters": "Clear Filters",
-      "noResults": "No Results",
-      "noEntries": "No Entries",
-      "noPages": "No pages",
-      "rowsPerPage": "Rows per page",
-      "atATime": "At a time"
+      "clearFilters": "Xóa bộ lọc",
+      "noResults": "Không có kết quả nào",
+      "noEntries": "Không có mục nào",
+      "noPages": "Không có trang nào",
+      "rowsPerPage": "Số hàng trên một trang",
+      "atATime": "Cùng một lúc"
     },
     "Upload": {
-      "title": "Drag 'n' drop files here, or click to select files",
-      "titleDropFile": "Drop the files here",
-      "description": "You can upload a file with {size} MB",
-      "fileRejected": "File {name} was rejected",
-      "cannotUploadFiles": "Cannot upload more than {max} files",
-      "fileUploadMessage": "{count, plural, one {# file uploaded} other {# files uploaded}}"
+      "title": "Kéo và thả các tập tin ở đây hoặc nhấp để chọn các tập tin",
+      "titleDropFile": "Thả các tập tin ở đây",
+      "description": "Bạn có thể tải lên một tập tin có kích thước {size} MB",
+      "fileRejected": "Tệp {name} đã bị từ chối",
+      "cannotUploadManyFiles": "Không thể tải lên nhiều hơn {max} tệp",
+      "fileUploadMessage": "{count, plural, one {# tệp tin đã tải lên} other {# tệp tin đã tải lên}}"
     },
     "Navbar": {
-      "dashboard": "Overview",
-      "products": "Products",
-      "newProduct": "New",
-      "settings": "Settings"
+      "dashboard": "Trang chủ",
+      "overview": "Tổng quan",
+      "products": "Sản phẩm",
+      "newProduct": "Thêm sản phẩm",
+      "settings": "Cài đặt",
+      "new": "Thêm mới"
     },
     "ProductsPage": {
       "Validation": {
-        "nameRequired": "Name is required",
-        "stringName": "Name must be string",
-        "lengthName": "Tên sản phẩm có ít nhất 3~100 kí tự",
-        "marketPriceRequired": "Market price is required",
-        "invalidMarketPrice": "Invalid market price",
-        "minMaxMarketPrice": "Giá mua có giá tối thiểu {min}~{max}",
-        "salePriceRequired": "Sale price is required",
-        "invalidSalePrice": "Invalid sale price",
-        "minMaxSalePrice": "Giá bán có giá tối thiểu {min}~{max}",
-        "existName": "Product name is exist"
+        "nameRequired": "Không được để trống",
+        "stringName": "Tên phải là các kí tự",
+        "lengthName": "Tên sản phẩm có ít nhất {min}~{max} kí tự",
+        "marketPriceRequired": "Không được để trống",
+        "invalidMarketPrice": "Giá mua không hợp lệ",
+        "minMaxMarketPrice": "Giá mua có giá từ {min}~{max}",
+        "salePriceRequired": "Không được để trống",
+        "invalidSalePrice": "Giá bán không hợp lệ",
+        "minMaxSalePrice": "Giá bán có giá từ {min}~{max}",
+        "existName": "Tên sản phẩm đã tồn tại"
       },
 
       "Messages": {
-        "createProductSuccess": "Create product successfully",
-        "createProductFailed": "Create product failed"
+        "createProductSuccess": "Thêm sản phẩm thành công",
+        "createProductFailed": "Thêm sản phẩm thất bại",
+        "updateProductSuccess": "Sửa sản phẩm thành công",
+        "updateProductFailed": "Sửa sản phẩm thất bại",
+        "deleteProductSuccess": "Xóa sản phẩm thành công",
+        "deleteProductFailed": "Xóa sản phẩm thất bại"
       },
 
       "Heading": {
-        "title": "Products",
-        "description": "Mange products"
+        "title": "Sản phẩm",
+        "description": "Quản lý sản phẩm"
       },
 
       "CreatePage": {
-        "hintFillInfo": "Suggested information filling",
-        "titleBtnCreate": "Add new",
-        "basicInfo": "Basic Information",
-        "saleInfo": "Sale Information"
+        "hintFillInfo": "Gợi ý điền thông tin",
+        "titleBtnCreate": "Thêm 1 sản phẩm mới",
+        "basicInfo": "Thông tin cơ bản",
+        "saleInfo": "Thông tin bán hàng"
       },
 
-      "imageField": "Image",
-      "nameProductField": "Name",
-      "marketPriceField": "Market Price",
-      "salePriceField": "Sale Price",
-      "statusField": "Status",
-      "createdAtField": "Created At",
+      "imageField": "Hình ảnh",
+      "nameProductField": "Tên sản phẩm",
+      "marketPriceField": "Giá mua",
+      "salePriceField": "Giá bán",
+      "statusField": "Trạng thái",
+      "createdAtField": "Thời gian tạo",
 
-      "placeholderSearchBox": "Search name...",
-      "placeholderStatusFilterBox": "Status",
+      "placeholderSearchBox": "Tìm kiếm tên...",
+      "placeholderStatusFilterBox": "Trạng thái",
 
-      "allStatus": "All status",
-      "statusActive": "Active",
-      "statusInactive": "Inactive",
+      "titleShowingEntries": "Hiển thị {from} đến {to} trong số {total} mục",
+      "titleShowingPages": "Trang {current} trong {total} trang",
 
-      "titleCellActions": "Actions",
-      "titleDetailsAction": "Details",
-      "titleEditAction": "Edit info",
-      "titleHideAction": "Hide",
-      "titleShowAction": "Show",
-      "titleDeleteAction": "Delete",
+      "allStatus": "Tất cả trạng thái",
+      "statusActive": "Hoạt động",
+      "statusInactive": "Không hoạt động",
 
-      "titleShowingEntries": "Showing {from} to {to} of {total} entries",
-      "titleShowingPages": "Page {current} of {total}",
+      "titleCellActions": "Thao tác",
+      "titleDetailsCellAction": "Xem chi tiết",
+      "titleEditCellAction": "Sửa thông tin",
+      "titleHideCellAction": "Ẩn",
+      "titleShowCellAction": "Hiện",
+      "titleDeleteCellAction": "Xóa",
 
-      "titleBtnCancel": "Cancel",
-      "titleBtnSaveAndHide": "Save & Hide",
-      "titleBtnSaveAndShow": "Save & Show"
+      "titleAlertDialogDelete": "Bạn chắc chắn ?",
+      "descriptionAlertDialogDelete": "Không thể hoàn tác hành động này. Thao tác này sẽ vĩnh viễn xóa sản phẩm khỏi máy chủ.",
+      "titleAlertDialogCancelCreateOrUpdate": "Xác nhận",
+      "descriptionAlertDialogCancelCreateOrUpdate": "Hủy thay đổi",
+
+      "titleBtnCancel": "Hủy bỏ",
+      "titleBtnSaveAndHide": "Lưu & Ẩn",
+      "titleBtnSaveAndShow": "Lưu & Hiện thị",
+      "titleBtnCancelAlertDialog": "Quay lại",
+      "titleBtnContinueAlertDialog": "Tiếp tục"
     }
   }
 }

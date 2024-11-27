@@ -64,3 +64,15 @@ export function formatDate(
     return format.dateTime(date, options);
   }
 }
+
+export async function convertObjectToFormData(
+  obj: Record<string, any>
+): Promise<FormData> {
+  const formData = new FormData();
+  Object.entries(obj).forEach(([key, value]) => {
+    if (value !== undefined && value !== null) {
+      formData.append(key, value);
+    }
+  });
+  return formData;
+}

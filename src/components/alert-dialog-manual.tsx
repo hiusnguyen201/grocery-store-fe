@@ -26,6 +26,8 @@ type AlertDialogManualProps = {
   trigger: ReactNode | string;
   open?: boolean;
   onOpenChange?: Dispatch<SetStateAction<boolean>>;
+  titleBtnCancel: string;
+  titleBtnContinue: string;
 };
 
 export function AlertDialogManual({
@@ -35,6 +37,8 @@ export function AlertDialogManual({
   onContinue,
   trigger,
   onOpenChange,
+  titleBtnCancel,
+  titleBtnContinue,
 }: AlertDialogManualProps) {
   const [openAlertDialog, setOpenAlertDialog] = useState(false);
 
@@ -73,9 +77,9 @@ export function AlertDialogManual({
               )}
             </AlertDialogHeader>
             <AlertDialogFooter>
-              <AlertDialogCancel>Cancel</AlertDialogCancel>
+              <AlertDialogCancel>{titleBtnCancel}</AlertDialogCancel>
               <AlertDialogAction onClick={onContinue}>
-                Continue
+                {titleBtnContinue}
               </AlertDialogAction>
             </AlertDialogFooter>
           </AlertDialogContent>

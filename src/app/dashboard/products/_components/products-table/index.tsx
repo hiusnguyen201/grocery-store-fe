@@ -8,8 +8,8 @@ import { useTranslations } from "next-intl";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { RootState } from "@/lib/store";
 import { getAllProducts } from "@/lib/features/product-slice";
-import { useTableFilters } from "./use-table-filters";
-import { useProductStatusOptions } from "./use-product-status-options";
+import { useTableFilters } from "../../_hooks/use-table-filters";
+import { useProductStatusOptions } from "../../_hooks/use-product-status-options";
 import { useRouter } from "next/navigation";
 import { useDebouncedCallback } from "use-debounce";
 

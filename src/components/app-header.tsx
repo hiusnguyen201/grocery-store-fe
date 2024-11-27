@@ -13,8 +13,8 @@ import { cn } from "@/lib/utils";
 import { Fragment } from "react";
 
 export function AppHeader({ className }: { className?: string }) {
-  const items = useBreadcrumbs();
-  if (items?.length === 0) return null;
+  const { breadcrumbs } = useBreadcrumbs();
+  if (breadcrumbs?.length === 0) return null;
 
   return (
     <header
@@ -28,12 +28,12 @@ export function AppHeader({ className }: { className?: string }) {
         <Separator orientation="vertical" className="mr-2 h-4" />
         <Breadcrumb>
           <BreadcrumbList>
-            {items.map((item, index) => (
+            {breadcrumbs.map((item, index) => (
               <Fragment key={item.title}>
-                {index !== items.length - 1 && (
+                {item.title && index !== breadcrumbs.length - 1 && (
                   <BreadcrumbItem
                     className={cn(
-                      index === 0 && items.length > 1
+                      index === 0 && breadcrumbs.length > 1
                         ? "hidden md:block"
                         : "block"
                     )}
@@ -43,16 +43,17 @@ export function AppHeader({ className }: { className?: string }) {
                     </BreadcrumbLink>
                   </BreadcrumbItem>
                 )}
-                {index < items.length - 1 && (
-                  <BreadcrumbSeparator
-                    className={cn(
-                      index === 0 && items.length > 1
-                        ? "hidden md:block"
-                        : "block"
-                    )}
-                  />
-                )}
-                {index === items.length - 1 && (
+                {breadcrumbs[index + 1]?.title &&
+                  index < breadcrumbs.length - 1 && (
+                    <BreadcrumbSeparator
+                      className={cn(
+                        index === 0 && breadcrumbs.length > 1
+                          ? "hidden md:block"
+                          : "block"
+                      )}
+                    />
+                  )}
+                {index === breadcrumbs.length - 1 && (
                   <BreadcrumbItem>
                     <BreadcrumbPage>{item.title}</BreadcrumbPage>
                   </BreadcrumbItem>

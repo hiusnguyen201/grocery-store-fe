@@ -100,12 +100,51 @@ export const getAllProducts =
     }
   };
 
+export const getProduct = (id: string) => async (dispatch: Dispatch) => {
+  try {
+    dispatch(startLoading());
+    const { data } = await apiProduct.getProduct(id);
+    dispatch(getOne(data.data || {}));
+  } catch (e: any) {
+    dispatch(hasError(e?.response?.data || e));
+  } finally {
+    dispatch(stopLoading());
+  }
+};
+
 export const createProduct =
   (payload: FormData) => async (dispatch: Dispatch) => {
     try {
       dispatch(startLoading());
       const { data } = await apiProduct.createProduct(payload);
       dispatch(create(data.data || {}));
+    } catch (e: any) {
+      dispatch(hasError(e?.response?.data || e));
+    } finally {
+      dispatch(stopLoading());
+    }
+  };
+
+export const updateProduct =
+  (id: string, payload: FormData) => async (dispatch: Dispatch) => {
+    try {
+      dispatch(startLoading());
+      const { data } = await apiProduct.updateProduct(id, payload);
+      dispatch(update(data.data || {}));
+      return data.data;
+    } catch (e: any) {
+      dispatch(hasError(e?.response?.data || e));
+    } finally {
+      dispatch(stopLoading());
+    }
+  };
+
+export const removeProduct =
+  (id: string) => async (dispatch: Dispatch) => {
+    try {
+      dispatch(startLoading());
+      const { data } = await apiProduct.removeProduct(id);
+      dispatch(remove(data.data || {}));
     } catch (e: any) {
       dispatch(hasError(e?.response?.data || e));
     } finally {
@@ -138,14 +177,11 @@ export const showProduct = (id: string) => async (dispatch: Dispatch) => {
 };
 
 export const checkNameExists =
-  (id: string) => async (dispatch: Dispatch) => {
+  (name: string, skipId?: string) => async (dispatch: Dispatch) => {
     try {
-      dispatch(startLoading());
-      const { data } = await apiProduct.checkNameExists(id);
+      const { data } = await apiProduct.checkNameExists(name, skipId);
       return data.data;
     } catch (e: any) {
       dispatch(hasError(e?.response?.data || e));
-    } finally {
-      dispatch(stopLoading());
     }
   };

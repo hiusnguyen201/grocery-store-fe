@@ -11,7 +11,7 @@ import { Product } from "@/types/product";
 import { useMemo } from "react";
 import { useTranslations } from "next-intl";
 import { formatCurrency, formatDate } from "@/lib/utils";
-import { useProductStatusOptions } from "./use-product-status-options";
+import { useProductStatusOptions } from "@/app/dashboard/products/_hooks/use-product-status-options";
 
 export function getColumns() {
   const t = useTranslations("Dashboard.ProductsPage");
@@ -30,13 +30,13 @@ export function getColumns() {
         accessorKey: "image",
         header: t("imageField"),
         cell: ({ row }) => {
-          const { image, name } = row.original;
-          if (!image) return <></>;
+          const { productImage, name } = row.original;
+          if (!productImage) return <></>;
           return (
             <img
-              src={image}
+              src={productImage.smallPath}
               alt={name}
-              className="rounded w-[45px] h-full"
+              className="rounded w-[50px] h-full"
             />
           );
         },

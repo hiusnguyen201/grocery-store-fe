@@ -36,7 +36,7 @@ export default function DashboardLayout({
       },
       navMain: [
         {
-          title: t("dashboard"),
+          title: t("overview"),
           url: "/dashboard/overview",
           icon: LayoutDashboard,
         },

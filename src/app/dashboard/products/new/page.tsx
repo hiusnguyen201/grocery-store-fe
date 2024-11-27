@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect } from "react";
 import {
   Card,
   CardContent,
@@ -23,24 +23,18 @@ import { createProduct } from "@/lib/features/product-slice";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { toast } from "@/hooks/use-toast";
 import { RootState } from "@/lib/store";
-import { formatCurrency } from "@/lib/utils";
+import { convertObjectToFormData, formatCurrency } from "@/lib/utils";
 import {
   MAX_LENGTH_NAME_PRODUCT,
   MAX_PRICE_PRODUCT,
   MIN_LENGTH_NAME_PRODUCT,
   MIN_PRICE_PRODUCT,
   useProductSchema,
-} from "./use-product-schema";
+} from "@/app/dashboard/products/_hooks/use-product-schema";
 
 export default function CreateProductPage() {
-  const { productSchema } = useProductSchema();
-  const { minPriceFormat, maxPriceFormat } = useMemo(
-    () => ({
-      minPriceFormat: formatCurrency(MIN_PRICE_PRODUCT),
-      maxPriceFormat: formatCurrency(MAX_PRICE_PRODUCT),
-    }),
-    []
-  );
+  const { productSchema, minPriceFormat, maxPriceFormat } =
+    useProductSchema();
 
   const t = useTranslations("Dashboard.ProductsPage");
   const { error, isLoading } = useAppSelector(
@@ -50,35 +44,22 @@ export default function CreateProductPage() {
 
   const formik = useFormik({
     initialValues: {
-      image: [] as File[],
+      image: null,
       name: "",
       marketPrice: 0,
       salePrice: 0,
       status: ProductStatus.ACTIVE,
     },
-    onSubmit: (values) => {
-      const formData = new FormData();
-
-      formData.append("name", values.name);
-      formData.append("marketPrice", values.marketPrice.toString());
-      formData.append("salePrice", values.salePrice.toString());
-      formData.append("status", values.status);
-
-      if (values.image.length > 0) {
-        formData.append("image", values.image[0]);
-      }
-
-      dispatch(createProduct(formData));
-
+    onSubmit: async (values) => {
+      const data = await convertObjectToFormData(values);
+      await dispatch(createProduct(data));
       if (!isLoading && !error) {
-        setFieldValue("image", []);
         resetForm();
       }
     },
     validationSchema: productSchema,
     validateOnChange: false,
     validateOnBlur: false,
-    validateOnMount: true,
   });
 
   const {
@@ -109,7 +90,7 @@ export default function CreateProductPage() {
         variant: "destructive",
       });
     }
-  }, [error, submitCount, isLoading]);
+  }, [error, submitCount]);
 
   return (
     <>
@@ -193,9 +174,9 @@ export default function CreateProductPage() {
                     maxFiles={1}
                     multiple={false}
                     accept={{ "image/*": allowImageMimeTypes }}
-                    value={values.image}
-                    onValueChange={(value) => {
-                      setFieldValue("image", value);
+                    value={values.image ? [values.image] : []}
+                    onValueChange={(files: File[]) => {
+                      setFieldValue("image", files[0]);
                     }}
                   />
 
@@ -204,6 +185,7 @@ export default function CreateProductPage() {
                     type="text"
                     placeholder={`${t("nameProductField")}...`}
                     label={t("nameProductField")}
+                    autoComplete="off"
                     error={!!(touched.name && errors.name)}
                     id="name"
                     name="name"

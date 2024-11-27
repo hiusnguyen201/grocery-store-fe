@@ -19,12 +19,12 @@ export function useProductStatusOptions() {
         label: t("statusInactive"),
         value: ProductStatus.INACTIVE,
       },
-      {
-        textColor: "#fff",
-        bgColor: "#dc3545",
-        label: t("statusInactive"),
-        value: ProductStatus.DELETED,
-      },
+      // {
+      //   textColor: "#fff",
+      //   bgColor: "#dc3545",
+      //   label: t("statusDelete"),
+      //   value: ProductStatus.DELETED,
+      // },
     ],
     [t]
   );
