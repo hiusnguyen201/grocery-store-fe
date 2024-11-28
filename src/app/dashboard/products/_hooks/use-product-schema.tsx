@@ -19,49 +19,34 @@ export function useProductSchema() {
   const productSchema = useMemo(
     () =>
       Yup.object({
-        name: Yup.string()
-          .required(t("nameRequired"))
-          .min(
-            MIN_LENGTH_NAME_PRODUCT,
-            t("lengthName", {
-              min: MIN_LENGTH_NAME_PRODUCT,
-              max: MAX_LENGTH_NAME_PRODUCT,
-            })
-          )
-          .max(
-            MAX_LENGTH_NAME_PRODUCT,
-            t("lengthName", {
-              min: MIN_LENGTH_NAME_PRODUCT,
-              max: MAX_LENGTH_NAME_PRODUCT,
-            })
-          )
-          .test(
-            "uniqueName",
-            t("existName"),
-            async function (val: string) {
-              if (!val) {
-                return this.createError({ message: t("nameRequired") });
-              }
-
-              if (
-                !(
-                  this.parent.name.length >= MIN_LENGTH_NAME_PRODUCT &&
-                  this.parent.name.length <= MAX_LENGTH_NAME_PRODUCT
-                )
-              ) {
-                return this.createError({
-                  message: t("lengthName", {
-                    min: MIN_LENGTH_NAME_PRODUCT,
-                    max: MAX_LENGTH_NAME_PRODUCT,
-                  }),
-                });
-              }
-
-              return !(await dispatch(
-                checkNameExists(val, this.parent?._id)
-              ));
+        name: Yup.string().test(
+          "is-unique",
+          t("existName"),
+          async function (value) {
+            if (!value) {
+              return this.createError({ message: t("nameRequired") });
             }
-          ),
+
+            if (
+              !(
+                value.length >= MIN_LENGTH_NAME_PRODUCT &&
+                value.length <= MAX_LENGTH_NAME_PRODUCT
+              )
+            ) {
+              return this.createError({
+                message: t("lengthName", {
+                  min: MIN_LENGTH_NAME_PRODUCT,
+                  max: MAX_LENGTH_NAME_PRODUCT,
+                }),
+              });
+            }
+
+            const nameExists = await dispatch(
+              checkNameExists(value, this.parent?._id)
+            );
+            return !nameExists;
+          }
+        ),
         marketPrice: Yup.number()
           .required(t("marketPriceRequired"))
           .integer(t("invalidMarketPrice"))

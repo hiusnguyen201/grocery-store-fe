@@ -3,19 +3,22 @@ import { useSearchParams } from "next/navigation";
 import { LIMIT_PAGE } from "@/constants";
 import { MetaData } from "@/types/meta";
 
+export const initialFilter = {
+  page: 1,
+  limit: LIMIT_PAGE[0],
+};
+
 export function useTableFilters({ metaData }: { metaData: MetaData }) {
   const searchParams = useSearchParams();
   const [limit, setLimit] = useState<number>(() => {
     const value = searchParams.get("limit");
-    if (!value) {
-      return LIMIT_PAGE[0];
-    }
+    if (!value) return initialFilter.limit;
     return LIMIT_PAGE.includes(+value) ? +value : LIMIT_PAGE[0];
   });
   const [page, setPage] = useState<number>(() => {
     const value = searchParams.get("page");
     if (!value || +value < 1 || +value > metaData.totalPage) {
-      return 1;
+      return initialFilter.page;
     } else {
       return +value;
     }
@@ -27,15 +30,14 @@ export function useTableFilters({ metaData }: { metaData: MetaData }) {
     searchParams.get("status")
   );
 
-  const filters: Record<string, string> = useMemo(
-    () => ({
-      page: page.toString(),
-      limit: limit.toString(),
+  const filters: Record<string, any> = useMemo(() => {
+    return {
+      page: page,
+      limit: limit,
       ...(nameFilter ? { name: nameFilter } : {}),
       ...(statusFilter ? { status: statusFilter } : {}),
-    }),
-    [page, limit, nameFilter, statusFilter]
-  );
+    };
+  }, [page, limit, nameFilter, statusFilter]);
 
   return {
     page,

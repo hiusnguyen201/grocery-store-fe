@@ -8,13 +8,17 @@ import { useTranslations } from "next-intl";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { RootState } from "@/lib/store";
 import { getAllProducts } from "@/lib/features/product-slice";
-import { useTableFilters } from "../../_hooks/use-table-filters";
-import { useProductStatusOptions } from "../../_hooks/use-product-status-options";
-import { useRouter } from "next/navigation";
+import {
+  initialFilter,
+  useTableFilters,
+} from "@/app/dashboard/products/_hooks/use-table-filters";
+import { useProductStatusOptions } from "@/app/dashboard/products/_hooks/use-product-status-options";
+import { usePathname, useRouter } from "next/navigation";
 import { useDebouncedCallback } from "use-debounce";
 
 export function ProductsTable() {
   const router = useRouter();
+  const pathname = usePathname();
   const t = useTranslations("Dashboard.ProductsPage");
   const { PRODUCT_STATUS_OPTIONS } = useProductStatusOptions();
   const { list, meta, isLoading } = useAppSelector(
@@ -37,9 +41,11 @@ export function ProductsTable() {
   const dispatch = useAppDispatch();
 
   const handleGetAllProducts = useCallback(() => {
-    router.push(`/dashboard/products?${new URLSearchParams(filters)}`);
+    if (pathname !== "/dashboard/products") {
+      router.push(`/dashboard/products?${new URLSearchParams(filters)}`);
+    }
     dispatch(getAllProducts(filters));
-  }, [dispatch, page, limit, statusFilter, nameFilter]);
+  }, [dispatch, filters]);
 
   const debouncedHandleGetAllProducts = useDebouncedCallback(
     handleGetAllProducts,
@@ -54,7 +60,7 @@ export function ProductsTable() {
     }
 
     handleGetAllProducts();
-  }, [dispatch, page, limit, statusFilter, nameFilter]);
+  }, [dispatch, filters]);
 
   return (
     <Fragment>
@@ -64,8 +70,14 @@ export function ProductsTable() {
           name="name"
           placeholder={t("placeholderSearchBox")}
           value={nameFilter}
-          setValue={setNameFilter}
+          onValueChange={(value) => {
+            if (!filters.nameFilter) {
+              setPage(initialFilter.page);
+            }
+            setNameFilter(value);
+          }}
         />
+
         <DataTableFilterBox
           multipleSelect={false}
           id="status"
@@ -73,7 +85,12 @@ export function ProductsTable() {
           placeholder={t("placeholderStatusFilterBox")}
           options={PRODUCT_STATUS_OPTIONS}
           filterValue={statusFilter}
-          setFilterValue={setStatusFilter}
+          onFilterValueChange={(value) => {
+            if (!filters.statusFilter) {
+              setPage(initialFilter.page);
+            }
+            setStatusFilter(value);
+          }}
         />
       </div>
 
@@ -89,11 +106,19 @@ export function ProductsTable() {
         }}
         onNext={() => {
           if (meta.isNext) {
+            filters.page = page + 1;
+            router.push(
+              `/dashboard/products?${new URLSearchParams(filters)}`
+            );
             setPage(page + 1);
           }
         }}
         onPrevious={() => {
           if (meta.isPrevious) {
+            filters.page = page - 1;
+            router.push(
+              `/dashboard/products?${new URLSearchParams(filters)}`
+            );
             setPage(page - 1);
           }
         }}

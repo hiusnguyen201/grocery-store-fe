@@ -1,12 +1,11 @@
 import { Input } from "@/components/ui/input";
-import { Dispatch, SetStateAction } from "react";
 
 export type DataTableSearchProps = {
   id?: string;
   name: string;
   value: string | null;
   placeholder?: string;
-  setValue: Dispatch<SetStateAction<string | null>>;
+  onValueChange: (value: string) => void;
 };
 
 export function DataTableSearch({
@@ -14,7 +13,7 @@ export function DataTableSearch({
   name,
   placeholder,
   value = "",
-  setValue,
+  onValueChange,
 }: DataTableSearchProps) {
   return (
     <Input
@@ -23,7 +22,9 @@ export function DataTableSearch({
       placeholder={placeholder}
       className="md:max-w-sm"
       value={value ? value : ""}
-      onChange={(e) => setValue(e.target.value)}
+      onChange={(e) => {
+        onValueChange(e.target.value);
+      }}
     />
   );
 }

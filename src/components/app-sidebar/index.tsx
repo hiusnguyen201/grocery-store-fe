@@ -2,8 +2,8 @@
 
 import * as React from "react";
 
-import { NavMain, TNavMainItem } from "@/components/AppSidebar/nav-main";
-import { NavUser, TNavUser } from "@/components/AppSidebar/nav-user";
+import { NavMain, TNavMainItem } from "@/components/app-sidebar/nav-main";
+import { NavUser, TNavUser } from "@/components/app-sidebar/nav-user";
 import {
   Sidebar,
   SidebarContent,

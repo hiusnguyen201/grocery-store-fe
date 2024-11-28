@@ -37,11 +37,9 @@ const productSlice = createSlice({
     startLoading(state) {
       state.isLoading = true;
     },
-    stopLoading(state) {
-      state.isLoading = false;
-    },
     hasError(state, action: PayloadAction<any>) {
       state.error = action.payload;
+      state.isLoading = false;
     },
     getAll(
       state,
@@ -50,20 +48,24 @@ const productSlice = createSlice({
       state.list = action.payload.data;
       state.meta = action.payload.meta;
       state.error = null;
+      state.isLoading = false;
     },
     getOne(state, action: PayloadAction<Product>) {
       state.item = action.payload;
       state.error = null;
+      state.isLoading = false;
     },
     create(state, action: PayloadAction<Product>) {
       state.list.push(action.payload);
       state.error = null;
+      state.isLoading = false;
     },
     update(state, action: PayloadAction<Product>) {
       state.list = state.list.map((item) =>
         item._id === action.payload._id ? action.payload : item
       );
       state.error = null;
+      state.isLoading = false;
     },
     remove(state, action: PayloadAction<Product>) {
       state.list = state.list.filter(
@@ -71,13 +73,13 @@ const productSlice = createSlice({
       );
       state.deletedIds.push(action.payload._id);
       state.error = null;
+      state.isLoading = false;
     },
   },
 });
 
 export const {
   startLoading,
-  stopLoading,
   hasError,
   getAll,
   getOne,
@@ -95,8 +97,6 @@ export const getAllProducts =
       dispatch(getAll(data || []));
     } catch (e: any) {
       dispatch(hasError(e?.response?.data || e));
-    } finally {
-      dispatch(stopLoading());
     }
   };
 
@@ -107,8 +107,6 @@ export const getProduct = (id: string) => async (dispatch: Dispatch) => {
     dispatch(getOne(data.data || {}));
   } catch (e: any) {
     dispatch(hasError(e?.response?.data || e));
-  } finally {
-    dispatch(stopLoading());
   }
 };
 
@@ -120,8 +118,6 @@ export const createProduct =
       dispatch(create(data.data || {}));
     } catch (e: any) {
       dispatch(hasError(e?.response?.data || e));
-    } finally {
-      dispatch(stopLoading());
     }
   };
 
@@ -134,8 +130,6 @@ export const updateProduct =
       return data.data;
     } catch (e: any) {
       dispatch(hasError(e?.response?.data || e));
-    } finally {
-      dispatch(stopLoading());
     }
   };
 
@@ -147,8 +141,6 @@ export const removeProduct =
       dispatch(remove(data.data || {}));
     } catch (e: any) {
       dispatch(hasError(e?.response?.data || e));
-    } finally {
-      dispatch(stopLoading());
     }
   };
 
@@ -159,8 +151,6 @@ export const hideProduct = (id: string) => async (dispatch: Dispatch) => {
     dispatch(update(data.data || {}));
   } catch (e: any) {
     dispatch(hasError(e?.response?.data || e));
-  } finally {
-    dispatch(stopLoading());
   }
 };
 
@@ -171,8 +161,6 @@ export const showProduct = (id: string) => async (dispatch: Dispatch) => {
     dispatch(update(data.data || {}));
   } catch (e: any) {
     dispatch(hasError(e?.response?.data || e));
-  } finally {
-    dispatch(stopLoading());
   }
 };
 

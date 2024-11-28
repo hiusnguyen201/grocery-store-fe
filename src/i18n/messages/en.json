@@ -41,10 +41,13 @@
       "Messages": {
         "createProductSuccess": "Thêm sản phẩm thành công",
         "createProductFailed": "Thêm sản phẩm thất bại",
-        "updateProductSuccess": "Sửa sản phẩm thành công",
-        "updateProductFailed": "Sửa sản phẩm thất bại",
-        "deleteProductSuccess": "Xóa sản phẩm thành công",
-        "deleteProductFailed": "Xóa sản phẩm thất bại"
+        "updateProductSuccess": "Cập nhật sản phẩm thành công",
+        "updateProductFailed": "Cập nhật sản phẩm thất bại",
+        "removeProductSuccess": "Xóa sản phẩm thành công",
+        "removeProductFailed": "Xóa sản phẩm thất bại",
+        "createProcessing": "Đang xử lý thêm mới...",
+        "updateProcessing": "Đang xử lý cập nhật...",
+        "removeProcessing": "Đang xử lý xóa..."
       },
 
       "Heading": {
@@ -89,6 +92,9 @@
       "descriptionAlertDialogCancelCreateOrUpdate": "Hủy thay đổi",
 
       "titleBtnCancel": "Hủy bỏ",
+      "titleBtnUpdate": "Cập nhật",
+      "titleBtnShow": "Hiển thị",
+      "titleBtnHide": "Ẩn",
       "titleBtnSaveAndHide": "Lưu & Ẩn",
       "titleBtnSaveAndShow": "Lưu & Hiện thị",
       "titleBtnCancelAlertDialog": "Quay lại",

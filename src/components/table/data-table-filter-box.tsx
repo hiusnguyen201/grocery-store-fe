@@ -20,16 +20,7 @@ import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
 import { CheckIcon, Plus } from "lucide-react";
 import { useTranslations } from "next-intl";
-import React, { Dispatch, Fragment, SetStateAction } from "react";
-import {
-  SelectContent,
-  SelectTrigger,
-  Select,
-  SelectValue,
-  SelectGroup,
-  SelectLabel,
-  SelectItem,
-} from "@/components/ui/select";
+import React, { Dispatch, SetStateAction } from "react";
 
 type FilterOption = {
   value: string;
@@ -42,9 +33,9 @@ type FilterBoxProps = {
   name: string;
   placeholder: string;
   options: FilterOption[];
-  setFilterValue: Dispatch<SetStateAction<string | null>>;
   filterValue: string | null;
   multipleSelect?: boolean;
+  onFilterValueChange: (value: string | null) => void;
 };
 
 export function DataTableFilterBox({
@@ -52,9 +43,9 @@ export function DataTableFilterBox({
   name,
   placeholder,
   options,
-  setFilterValue,
   filterValue,
   multipleSelect = true,
+  onFilterValueChange,
 }: FilterBoxProps) {
   const t = useTranslations("Dashboard.Common");
   const selectedValuesSet = React.useMemo(() => {
@@ -71,13 +62,13 @@ export function DataTableFilterBox({
       } else {
         newSet.add(value);
       }
-      setFilterValue(Array.from(newSet).join(".") || null);
+      onFilterValueChange(Array.from(newSet).join(".") || null);
     } else {
-      setFilterValue(newSet.has(value) ? null : value);
+      onFilterValueChange(newSet.has(value) ? null : value);
     }
   };
 
-  const resetFilter = () => setFilterValue(null);
+  const resetFilter = () => onFilterValueChange(null);
 
   return (
     <Popover>

@@ -39,12 +39,25 @@
       },
 
       "Messages": {
+        "createProcessing": "Đang xử lý thêm mới...",
         "createProductSuccess": "Thêm sản phẩm thành công",
         "createProductFailed": "Thêm sản phẩm thất bại",
-        "updateProductSuccess": "Sửa sản phẩm thành công",
-        "updateProductFailed": "Sửa sản phẩm thất bại",
-        "deleteProductSuccess": "Xóa sản phẩm thành công",
-        "deleteProductFailed": "Xóa sản phẩm thất bại"
+
+        "updateProcessing": "Đang xử lý cập nhật...",
+        "updateProductSuccess": "Cập nhật sản phẩm thành công",
+        "updateProductFailed": "Cập nhật sản phẩm thất bại",
+
+        "removeProcessing": "Đang xử lý xóa...",
+        "removeProductSuccess": "Xóa sản phẩm thành công",
+        "removeProductFailed": "Xóa sản phẩm thất bại",
+
+        "showProcessing": "Đang xử lý hiển thị...",
+        "showProductSuccess": "Hiện thị sản phẩm thành công",
+        "showProductFailed": "Hiện thị sản phẩm thất bại",
+
+        "hideProcessing": "Đang xử lý ẩn...",
+        "hideProductSuccess": "Đã ẩn sản phẩm thành công",
+        "hideProductFailed": "Đã ẩn sản phẩm thất bại"
       },
 
       "Heading": {
@@ -89,6 +102,9 @@
       "descriptionAlertDialogCancelCreateOrUpdate": "Hủy thay đổi",
 
       "titleBtnCancel": "Hủy bỏ",
+      "titleBtnUpdate": "Cập nhật",
+      "titleBtnShow": "Hiển thị",
+      "titleBtnHide": "Ẩn",
       "titleBtnSaveAndHide": "Lưu & Ẩn",
       "titleBtnSaveAndShow": "Lưu & Hiện thị",
       "titleBtnCancelAlertDialog": "Quay lại",

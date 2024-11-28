@@ -76,7 +76,7 @@ export function DataTable<TData, TValue>({
       <ScrollArea className="relative grid rounded-md border h-[calc(80vh-210px)] md:h-[calc(80vh-180px)] lg:h-[calc(80vh-150px)]">
         {loading && (
           <div className="absolute w-full h-full bg-[#fff] opacity-70 z-10 rounded-md flex items-center justify-center">
-            <Spinner size={"large"} />
+            <Spinner size={"large"} className="text-[#007bff]" />
           </div>
         )}
         <Table>

@@ -1,6 +1,6 @@
 "use client";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
-import { AppSidebar } from "@/components/AppSidebar";
+import { AppSidebar } from "@/components/app-sidebar";
 
 import {
   GalleryVerticalEnd,

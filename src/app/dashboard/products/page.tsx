@@ -2,7 +2,7 @@
 
 import { Heading } from "@/components/heading";
 import { Separator } from "@/components/ui/separator";
-import { ProductsTable } from "./_components/products-table";
+import { ProductsTable } from "@/app/dashboard/products/_components/products-table";
 import { useTranslations } from "use-intl";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
